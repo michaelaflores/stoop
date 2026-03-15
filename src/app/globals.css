@@ -1,19 +1,27 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F9F6F0;
-  --foreground: #26211A;
+  /* Backgrounds & Neutrals — warm parchment foundation */
+  --background: #FAF7F2;
+  --foreground: #1A2233;
   --surface: #FFFFFF;
-  --border: #EBE5DB;
-  --primary: #9E5433;
-  --primary-hover: #7D4128;
-  --secondary: #4A7C5E;
-  --secondary-hover: #3A6A4C;
-  --muted: #7D7267;
-  --accent: #D4A03A;
-  --alert: #C44040;
-  --card-shadow: 0 1px 3px rgba(38, 33, 26, 0.06);
-  --font-display: 'Gambetta', Georgia, serif;
+  --border: #E8E2D8;
+
+  /* Primary — deep Philly navy */
+  --primary: #1E3A5F;
+  --primary-hover: #152C4A;
+
+  /* Secondary — heritage red */
+  --secondary: #C94340;
+  --secondary-hover: #A83533;
+
+  /* Supporting */
+  --muted: #6B7280;
+  --accent: #B8933A;
+  --alert: #C94340;
+
+  --card-shadow: 0 1px 3px rgba(26, 34, 51, 0.06);
+  --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'General Sans', system-ui, sans-serif;
 }
 
@@ -59,23 +67,23 @@ body {
 
 /* Status badges */
 .badge-available {
-  background: #edf5ef;
-  color: #4A7C5E;
+  background: #E8F5EC;
+  color: #2D6A4F;
 }
 
 .badge-borrowed {
-  background: #fef3ee;
-  color: #9E5433;
+  background: #E8EEF6;
+  color: #1E3A5F;
 }
 
 .badge-category {
-  background: #f3ede4;
-  color: #6b5d4e;
+  background: #F0EBE2;
+  color: #5C5346;
 }
 
 .badge-accent {
-  background: rgba(212, 160, 58, 0.15);
-  color: #8E6D18;
+  background: rgba(184, 147, 58, 0.15);
+  color: #7D6820;
 }
 
 /* Bottom tab bar safe area for mobile */
@@ -114,7 +122,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 0.5rem;
   padding: 0.5rem 0.625rem;
-  box-shadow: 0 2px 8px rgba(45, 35, 25, 0.12);
+  box-shadow: 0 2px 8px rgba(26, 34, 51, 0.12);
 }
 
 .stoop-popup .maplibregl-popup-tip {

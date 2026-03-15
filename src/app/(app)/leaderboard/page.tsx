@@ -7,7 +7,7 @@ import type { LeaderboardEntry } from "@/lib/supabase/types";
 const TIER_BADGE_STYLES: Record<string, string> = {
   new_neighbor: "bg-border text-muted",
   regular: "bg-secondary/10 text-secondary",
-  block_captain: "bg-accent/10 text-[#8E6D18]",
+  block_captain: "bg-accent/10 text-[#7D6820]",
   neighborhood_legend: "bg-primary/10 text-primary",
 };
 

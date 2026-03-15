@@ -19,7 +19,7 @@ import { FeedDetailRealtime } from "./realtime";
 
 const severityStyles: Record<AlertSeverity, string> = {
   info: "bg-blue-50 text-blue-700",
-  warning: "bg-accent/15 text-[#8E6D18]",
+  warning: "bg-accent/15 text-[#7D6820]",
   urgent: "bg-alert/10 text-alert",
 };
 
