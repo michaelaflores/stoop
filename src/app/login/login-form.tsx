@@ -34,15 +34,15 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-lg bg-alert/10 px-3 py-2 text-sm text-alert">
+        <div className="rounded-lg bg-alert/10 px-4 py-3 text-sm text-alert font-medium">
           {error}
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium">
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-foreground">
           Email
         </label>
         <input
@@ -51,13 +51,13 @@ export function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="you@example.com"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-1 block text-sm font-medium">
+        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-foreground">
           Password
         </label>
         <input
@@ -67,12 +67,12 @@ export function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Your password"
         />
       </div>
 
-      <Button type="submit" disabled={loading} className="w-full">
+      <Button type="submit" disabled={loading} className="w-full mt-2">
         {loading ? "Signing in..." : "Sign in"}
       </Button>
     </form>

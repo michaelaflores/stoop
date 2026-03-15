@@ -39,10 +39,10 @@ export function SignupForm() {
 
   if (emailSent) {
     return (
-      <div className="text-center space-y-3">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+      <div className="text-center space-y-4">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
           <svg
-            className="h-6 w-6 text-primary"
+            className="h-7 w-7 text-primary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -55,9 +55,9 @@ export function SignupForm() {
             />
           </svg>
         </div>
-        <h2 className="text-lg font-semibold">Check your email</h2>
-        <p className="text-sm text-muted">
-          We sent a confirmation link to <strong>{email}</strong>. Click the
+        <h2 className="text-lg font-bold font-display">Check your email</h2>
+        <p className="text-sm text-muted leading-relaxed">
+          We sent a confirmation link to <strong className="text-foreground">{email}</strong>. Click the
           link to activate your account and get started.
         </p>
       </div>
@@ -65,9 +65,9 @@ export function SignupForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-lg bg-alert/10 px-3 py-2 text-sm text-alert">
+        <div className="rounded-lg bg-alert/10 px-4 py-3 text-sm text-alert font-medium">
           {error}
         </div>
       )}
@@ -75,7 +75,7 @@ export function SignupForm() {
       <div>
         <label
           htmlFor="displayName"
-          className="mb-1 block text-sm font-medium"
+          className="mb-1.5 block text-sm font-medium text-foreground"
         >
           Display name
         </label>
@@ -85,13 +85,13 @@ export function SignupForm() {
           value={displayName}
           onChange={(e) => setDisplayName(e.target.value)}
           required
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Your name"
         />
       </div>
 
       <div>
-        <label htmlFor="email" className="mb-1 block text-sm font-medium">
+        <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-foreground">
           Email
         </label>
         <input
@@ -100,13 +100,13 @@ export function SignupForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="you@example.com"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="mb-1 block text-sm font-medium">
+        <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-foreground">
           Password
         </label>
         <input
@@ -116,12 +116,12 @@ export function SignupForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="At least 6 characters"
         />
       </div>
 
-      <Button type="submit" disabled={loading} className="w-full">
+      <Button type="submit" disabled={loading} className="w-full mt-2">
         {loading ? "Creating account..." : "Create account"}
       </Button>
     </form>
