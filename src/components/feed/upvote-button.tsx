@@ -30,17 +30,16 @@ export function UpvoteButton({ postId, initialCount, hasVoted, userId }: UpvoteB
 
     if (newVoted) {
       const { error } = await supabase.from("votes").insert({ post_id: postId, user_id: userId });
-      if (!error) {
-        await supabase.from("posts").update({ upvote_count: count + 1 }).eq("id", postId);
-      } else {
+      if (error) {
+        // Revert optimistic update
         setVoted(false);
         setCount((c) => c - 1);
       }
+      // Count is maintained by database trigger — no manual update needed
     } else {
       const { error } = await supabase.from("votes").delete().eq("post_id", postId).eq("user_id", userId);
-      if (!error) {
-        await supabase.from("posts").update({ upvote_count: Math.max(0, count - 1) }).eq("id", postId);
-      } else {
+      if (error) {
+        // Revert optimistic update
         setVoted(true);
         setCount((c) => c + 1);
       }

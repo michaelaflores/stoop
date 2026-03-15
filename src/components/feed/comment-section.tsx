@@ -32,11 +32,7 @@ export function CommentSection({ comments, postId, userId }: CommentSectionProps
     });
 
     if (!error) {
-      // Increment comment count
-      await supabase
-        .from("posts")
-        .update({ comment_count: comments.length + 1 })
-        .eq("id", postId);
+      // Count is maintained by database trigger — no manual update needed
       setBody("");
       router.refresh();
     }

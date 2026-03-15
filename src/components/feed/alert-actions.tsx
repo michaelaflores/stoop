@@ -65,22 +65,7 @@ export function AlertActions({
         );
     }
 
-    // Update counts on the post
-    const newConfirmed = type === "confirm"
-      ? (previousResponse === type ? confirmedCount - 1 : confirmedCount + (previousResponse === "dismiss" ? 0 : 1))
-      : (previousResponse === "confirm" ? confirmedCount - 1 : confirmedCount);
-    const newDismissed = type === "dismiss"
-      ? (previousResponse === type ? dismissedCount - 1 : dismissedCount + (previousResponse === "confirm" ? 0 : 1))
-      : (previousResponse === "dismiss" ? dismissedCount - 1 : dismissedCount);
-
-    await supabase
-      .from("posts")
-      .update({
-        alert_confirmed_count: Math.max(0, newConfirmed),
-        alert_dismissed_count: Math.max(0, newDismissed),
-      })
-      .eq("id", postId);
-
+    // Counts are maintained by database triggers — no manual update needed
     router.refresh();
     setLoading(false);
   }
