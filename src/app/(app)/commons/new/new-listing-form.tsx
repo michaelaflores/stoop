@@ -86,8 +86,8 @@ export function NewListingForm({
       return;
     }
 
-    // Generate embedding for semantic search (fire-and-forget)
-    triggerEmbedding("listings", {
+    // Generate embedding for semantic search (awaited before navigation)
+    await triggerEmbedding("listings", {
       id: data.id,
       title,
       description,

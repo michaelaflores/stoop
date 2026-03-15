@@ -70,9 +70,9 @@ export function NewPostForm({ userId, neighborhoodId }: NewPostFormProps) {
       return;
     }
 
-    // Generate embedding for semantic search (fire-and-forget)
+    // Generate embedding for semantic search (awaited before navigation)
     if (newPost) {
-      triggerEmbedding("posts", {
+      await triggerEmbedding("posts", {
         id: newPost.id,
         title: title.trim(),
         body: body.trim(),

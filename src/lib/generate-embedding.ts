@@ -1,34 +1,42 @@
 /**
- * Fire-and-forget call to the generate-embedding Edge Function.
- * Called after creating/updating listings, posts, or requests
- * so semantic search stays up to date.
+ * Call the generate-embedding Edge Function after content creation.
+ * Fire-and-forget from the caller's perspective, but we do await
+ * internally so errors are logged to the browser console for debugging.
  */
-export function triggerEmbedding(
+export async function triggerEmbedding(
   table: "listings" | "posts" | "requests",
   record: Record<string, unknown>
-) {
+): Promise<void> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!supabaseUrl || !anonKey) return;
+  if (!supabaseUrl || !anonKey) {
+    console.warn("triggerEmbedding: missing SUPABASE_URL or ANON_KEY");
+    return;
+  }
 
-  // Fire and forget — don't block the UI on embedding generation
-  fetch(`${supabaseUrl}/functions/v1/generate-embedding`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${anonKey}`,
-      apikey: anonKey,
-    },
-    body: JSON.stringify({
-      type: "INSERT",
-      table,
-      schema: "public",
-      record,
-      old_record: null,
-    }),
-  }).catch((err) => {
-    // Silently log — embedding failure shouldn't affect the user
-    console.warn(`Embedding generation failed for ${table}:`, err);
-  });
+  try {
+    const res = await fetch(`${supabaseUrl}/functions/v1/generate-embedding`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${anonKey}`,
+        apikey: anonKey,
+      },
+      body: JSON.stringify({
+        type: "INSERT",
+        table,
+        schema: "public",
+        record,
+        old_record: null,
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`triggerEmbedding failed (${res.status}):`, text);
+    }
+  } catch (err) {
+    console.warn(`triggerEmbedding error for ${table}:`, err);
+  }
 }
