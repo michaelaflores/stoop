@@ -1,5 +1,6 @@
 // supabase/functions/search/index.ts
 // Edge Function: Semantic search across listings, posts, and requests
+// Deployed with --no-verify-jwt (auth handled by server actions)
 // Uses built-in gte-small model to embed the search query, then calls
 // the semantic_search RPC to find similar content via pgvector
 //
