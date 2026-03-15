@@ -61,7 +61,7 @@ BEGIN
   -- ============================================================
   -- CLEANUP: Remove previous seed borrows
   -- ============================================================
-  DELETE FROM reputation_events WHERE source_id IN (
+  DELETE FROM reputation_events WHERE reference_id IN (
     SELECT id FROM borrows WHERE message IN (
       'Would love to borrow this for a weekend project!',
       'Need this for a dinner party this Saturday.',
@@ -149,7 +149,7 @@ BEGIN
   UPDATE listings SET borrow_count = borrow_count + 1 WHERE id = v_listing4;
 
   -- Insert reputation events for the returned borrow
-  INSERT INTO reputation_events (user_id, event_type, points, source_id, created_at) VALUES
+  INSERT INTO reputation_events (user_id, event_type, points, reference_id, created_at) VALUES
     (v_user5, 'borrow_completed', 5, v_borrow_returned, now() - interval '4 days'),
     (v_user2, 'lend_completed', 10, v_borrow_returned, now() - interval '4 days'),
     (v_user5, 'rating_received', 3, v_borrow_returned, now() - interval '4 days'),

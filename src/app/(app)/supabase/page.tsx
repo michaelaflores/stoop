@@ -3,7 +3,6 @@ import {
   Lock,
   Radio,
   Users,
-  Megaphone,
   Image,
   MapPin,
   Brain,
@@ -64,14 +63,6 @@ const features: Feature[] = [
     name: "Realtime Presence",
     description:
       '"Who\'s on the stoop" — see active neighbors in real time with avatar circles and online count.',
-    category: "realtime",
-    isSupabaseSpecific: true,
-  },
-  {
-    icon: Megaphone,
-    name: "Realtime Broadcast",
-    description:
-      "Urgent safety alerts pushed instantly to every connected neighbor with a dismissible banner.",
     category: "realtime",
     isSupabaseSpecific: true,
   },
