@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { triggerEmbedding } from "@/lib/generate-embedding";
 import {
   ITEM_CATEGORIES,
   SKILL_CATEGORIES,
@@ -84,6 +85,13 @@ export function NewListingForm({
       setLoading(false);
       return;
     }
+
+    // Generate embedding for semantic search (fire-and-forget)
+    triggerEmbedding("listings", {
+      id: data.id,
+      title,
+      description,
+    });
 
     router.push(`/commons/${data.id}`);
     router.refresh();

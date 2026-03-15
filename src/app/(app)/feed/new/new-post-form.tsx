@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
+import { triggerEmbedding } from "@/lib/generate-embedding";
 import { cn } from "@/lib/utils";
 import {
   POST_TYPE_LABELS,
@@ -67,6 +68,15 @@ export function NewPostForm({ userId, neighborhoodId }: NewPostFormProps) {
       setError(insertError.message);
       setSubmitting(false);
       return;
+    }
+
+    // Generate embedding for semantic search (fire-and-forget)
+    if (newPost) {
+      triggerEmbedding("posts", {
+        id: newPost.id,
+        title: title.trim(),
+        body: body.trim(),
+      });
     }
 
     // Broadcast urgent alerts
