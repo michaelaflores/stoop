@@ -102,41 +102,10 @@ export function BorrowActionButtons({ borrowId, action }: ActionButtonsProps) {
             .eq("id", borrowId);
         }
       } else if (type === "confirm-return") {
-        const { data: borrow } = await supabase
-          .from("borrows")
-          .select("borrower_id, lender_id, borrower_confirmed_return, lender_confirmed_return, listing_id")
-          .eq("id", borrowId)
-          .single();
-
-        if (!borrow) return;
-
-        const isBorrower = borrow.borrower_id === user.id;
-        const field = isBorrower ? "borrower_confirmed_return" : "lender_confirmed_return";
-
-        await supabase
-          .from("borrows")
-          .update({ [field]: true })
-          .eq("id", borrowId);
-
-        const otherConfirmed = isBorrower
-          ? borrow.lender_confirmed_return
-          : borrow.borrower_confirmed_return;
-
-        if (otherConfirmed) {
-          await supabase
-            .from("borrows")
-            .update({
-              status: "returned",
-              actual_return_date: new Date().toISOString().split("T")[0],
-            })
-            .eq("id", borrowId);
-
-          // Set listing back to available
-          await supabase
-            .from("listings")
-            .update({ status: "available" })
-            .eq("id", borrow.listing_id);
-        }
+        await supabase.rpc("complete_borrow", {
+          borrow_id: borrowId,
+          completing_user_id: user.id,
+        });
       }
     } finally {
       setLoading(null);
