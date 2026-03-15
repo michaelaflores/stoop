@@ -1,17 +1,30 @@
+import Image, { type StaticImageData } from "next/image";
 import { ListingCategory } from "@/lib/supabase/types";
 
-const CATEGORY_VISUALS: Record<ListingCategory, { emoji: string; gradient: string }> = {
-  tools: { emoji: "🔨", gradient: "linear-gradient(135deg, #dcc8b4 0%, #c4a88a 100%)" },
-  kitchen: { emoji: "🍳", gradient: "linear-gradient(135deg, #d4c4b0 0%, #c2a88e 100%)" },
-  outdoor: { emoji: "🌿", gradient: "linear-gradient(135deg, #bdd0c2 0%, #8fb598 100%)" },
-  recreation: { emoji: "🎾", gradient: "linear-gradient(135deg, #c8d4c0 0%, #a8bea0 100%)" },
-  household: { emoji: "🏠", gradient: "linear-gradient(135deg, #d8cfc4 0%, #c4b8a8 100%)" },
-  electronics: { emoji: "💻", gradient: "linear-gradient(135deg, #c4ccd8 0%, #a8b4c4 100%)" },
-  skill_handyman: { emoji: "🔧", gradient: "linear-gradient(135deg, #dcc8b4 0%, #c4a88a 100%)" },
-  skill_tutoring: { emoji: "📚", gradient: "linear-gradient(135deg, #d4c8d8 0%, #b8a8c4 100%)" },
-  skill_pet: { emoji: "🐕", gradient: "linear-gradient(135deg, #d8d0c0 0%, #c4b8a0 100%)" },
-  skill_tech: { emoji: "⚡", gradient: "linear-gradient(135deg, #c4ccd8 0%, #a8b4c4 100%)" },
-  skill_other: { emoji: "✨", gradient: "linear-gradient(135deg, #d4ccc0 0%, #c0b4a4 100%)" },
+import toolsImg from "@/assets/fallbacks/tools.png";
+import kitchenImg from "@/assets/fallbacks/kitchen.png";
+import outdoorImg from "@/assets/fallbacks/outdoor.png";
+import recreationImg from "@/assets/fallbacks/recreation.png";
+import householdImg from "@/assets/fallbacks/household.png";
+import electronicsImg from "@/assets/fallbacks/electronics.png";
+import skillHandymanImg from "@/assets/fallbacks/skill-handyman.png";
+import skillTutoringImg from "@/assets/fallbacks/skill-tutoring.png";
+import skillPetImg from "@/assets/fallbacks/skill-pet.png";
+import skillTechImg from "@/assets/fallbacks/skill-tech.png";
+import skillOtherImg from "@/assets/fallbacks/skill-other.png";
+
+const CATEGORY_IMAGES: Record<ListingCategory, StaticImageData> = {
+  tools: toolsImg,
+  kitchen: kitchenImg,
+  outdoor: outdoorImg,
+  recreation: recreationImg,
+  household: householdImg,
+  electronics: electronicsImg,
+  skill_handyman: skillHandymanImg,
+  skill_tutoring: skillTutoringImg,
+  skill_pet: skillPetImg,
+  skill_tech: skillTechImg,
+  skill_other: skillOtherImg,
 };
 
 interface ListingPlaceholderProps {
@@ -20,15 +33,16 @@ interface ListingPlaceholderProps {
 }
 
 export function ListingPlaceholder({ category, className = "" }: ListingPlaceholderProps) {
-  const visual = CATEGORY_VISUALS[category] ?? CATEGORY_VISUALS.tools;
+  const img = CATEGORY_IMAGES[category] ?? CATEGORY_IMAGES.tools;
   return (
-    <div
-      className={`flex items-center justify-center ${className}`}
-      style={{ background: visual.gradient }}
-    >
-      <span className="text-4xl opacity-60 select-none" role="img" aria-hidden="true">
-        {visual.emoji}
-      </span>
+    <div className={`relative ${className}`}>
+      <Image
+        src={img}
+        alt={`${category.replace(/_/g, " ")} placeholder`}
+        fill
+        className="object-cover"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      />
     </div>
   );
 }
