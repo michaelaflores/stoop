@@ -40,9 +40,10 @@ function getResultLink(result: SearchResult): string {
 
 interface SearchResultsProps {
   results: SearchResult[];
+  isSemanticMode?: boolean;
 }
 
-export function SearchResults({ results }: SearchResultsProps) {
+export function SearchResults({ results, isSemanticMode = false }: SearchResultsProps) {
   const [activeTab, setActiveTab] = useState<FilterTab>("all");
 
   const filtered =
@@ -96,14 +97,22 @@ export function SearchResults({ results }: SearchResultsProps) {
           >
             <div className="flex items-start gap-3">
               <div className="min-w-0 flex-1">
-                <span
-                  className={cn(
-                    "inline-block rounded-full px-2 py-0.5 text-xs font-medium",
-                    SOURCE_BADGE_STYLES[result.source_type]
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "inline-block rounded-full px-2 py-0.5 text-xs font-medium",
+                      SOURCE_BADGE_STYLES[result.source_type]
+                    )}
+                  >
+                    {SOURCE_LABELS[result.source_type]}
+                  </span>
+
+                  {isSemanticMode && result.relevance > 0 && (
+                    <span className="inline-flex items-center gap-0.5 rounded-full bg-[#3ECF8E]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[#3ECF8E]">
+                      {Math.round(result.relevance * 100)}% match
+                    </span>
                   )}
-                >
-                  {SOURCE_LABELS[result.source_type]}
-                </span>
+                </div>
 
                 <h3 className="mt-1.5 font-display text-base font-bold leading-tight">
                   {result.title}

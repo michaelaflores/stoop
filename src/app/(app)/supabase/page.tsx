@@ -12,11 +12,12 @@ import {
   Zap,
   Activity,
   Webhook,
+  Cpu,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type FeatureCategory = "auth" | "realtime" | "data";
+type FeatureCategory = "auth" | "realtime" | "data" | "ai";
 
 interface Feature {
   icon: LucideIcon;
@@ -30,6 +31,7 @@ const CATEGORY_BORDER: Record<FeatureCategory, string> = {
   auth: "border-l-primary",
   realtime: "border-l-secondary",
   data: "border-l-accent",
+  ai: "border-l-[#3ECF8E]",
 };
 
 const features: Feature[] = [
@@ -85,8 +87,16 @@ const features: Feature[] = [
     icon: Webhook,
     name: "Database Webhooks",
     description:
-      "Profile auto-creation on signup via handle_new_user trigger, keeping auth and app data in sync.",
+      "Profile auto-creation on signup via handle_new_user trigger, and embedding generation triggers on content changes.",
     category: "auth",
+    isSupabaseSpecific: true,
+  },
+  {
+    icon: Cpu,
+    name: "Edge Functions",
+    description:
+      "Two Edge Functions: generate-embedding (auto-generates 384-dim vectors via built-in gte-small model on content changes) and search (semantic similarity search via pgvector RPC). Zero external API dependencies.",
+    category: "ai",
     isSupabaseSpecific: true,
   },
   {
@@ -101,15 +111,15 @@ const features: Feature[] = [
     icon: Brain,
     name: "pgvector",
     description:
-      "Embedding columns on listings and posts, ready for semantic search with cosine similarity.",
-    category: "data",
+      "384-dimensional embedding columns on listings, posts, and requests with HNSW indexes for fast cosine similarity search.",
+    category: "ai",
     isSupabaseSpecific: false,
   },
   {
     icon: Search,
     name: "Full-Text Search",
     description:
-      "Neighborhood Memory — unified search across listings, posts, and requests using ts_vector and GIN indexes.",
+      "Neighborhood Memory — unified keyword search across listings, posts, and requests using ts_vector and GIN indexes.",
     category: "data",
     isSupabaseSpecific: false,
   },
@@ -125,7 +135,7 @@ const features: Feature[] = [
     icon: Zap,
     name: "Database Functions (RPCs)",
     description:
-      "complete_borrow, get_leaderboard, search_neighborhood, and assign_neighborhood — complex logic in Postgres, exposed via Supabase's auto-REST API.",
+      "complete_borrow, get_leaderboard, search_neighborhood, semantic_search, and assign_neighborhood — complex logic in Postgres, exposed via Supabase's auto-REST API.",
     category: "data",
     isSupabaseSpecific: false,
   },
@@ -204,7 +214,7 @@ export default function SupabasePage() {
       </div>
 
       <p className="mt-8 text-center text-sm text-muted">
-        {features.length} features. {supabaseCount} Supabase platform + {pgCount} Postgres extensions. Built in 8 hours.
+        {features.length} features. {supabaseCount} Supabase platform + {pgCount} Postgres extensions.
       </p>
     </div>
   );
