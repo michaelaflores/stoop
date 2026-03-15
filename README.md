@@ -22,7 +22,6 @@ Built for the [Good Neighbors Hackathon](https://indyhall.org/goodneighbors/) at
 | Database (Postgres) | All app data with relational schema |
 | Row-Level Security | Posts/comments scoped to user's neighborhood |
 | Realtime — Postgres Changes | Live feed and comment updates |
-| Realtime — Broadcast | Urgent safety alert push |
 | Realtime — Presence | "Who's on the stoop" active users |
 | Edge Functions | `generate-embedding` — auto-generates 384-dim vectors on content INSERT/UPDATE using built-in gte-small model (zero external API deps). `search` — semantic similarity search via pgvector RPC. |
 | Database Webhooks | Trigger Edge Functions on INSERT/UPDATE, profile auto-creation on signup |
