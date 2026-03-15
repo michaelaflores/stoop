@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageSquare, Search, User } from "lucide-react";
+import { Home, MessageSquare, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { UserDropdown } from "./user-dropdown";
 
 const navItems = [
   { href: "/commons", label: "Commons", icon: Home },
   { href: "/feed", label: "Feed", icon: MessageSquare },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/profile", label: "Profile", icon: User },
 ];
 
 interface TopNavProps {
@@ -47,21 +47,8 @@ export function TopNav({ displayName, avatarUrl }: TopNavProps) {
         })}
       </nav>
 
-      <div className="ml-auto flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={displayName}
-              className="h-7 w-7 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
-              {displayName.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <span className="text-sm font-medium">{displayName}</span>
-        </div>
+      <div className="ml-auto">
+        <UserDropdown displayName={displayName} avatarUrl={avatarUrl} />
       </div>
     </header>
   );

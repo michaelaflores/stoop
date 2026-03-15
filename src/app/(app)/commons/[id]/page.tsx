@@ -3,11 +3,11 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CategoryBadge } from "@/components/listings/category-badge";
-import { Button } from "@/components/ui/button";
 import {
   REPUTATION_TIER_LABELS,
   type ListingWithOwner,
 } from "@/lib/supabase/types";
+import { ListingDetailRealtime } from "./realtime-wrapper";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -16,6 +16,10 @@ interface Props {
 export default async function ListingDetailPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: listing } = await supabase
     .from("listings")
@@ -31,9 +35,12 @@ export default async function ListingDetailPage({ params }: Props) {
 
   const item = listing as ListingWithOwner;
   const photoUrl = item.photo_urls?.[0];
+  const isOwner = user?.id === item.owner_id;
 
   return (
     <div className="mx-auto max-w-lg px-4 py-4">
+      {user && <ListingDetailRealtime userId={user.id} />}
+
       {/* Back link */}
       <Link
         href="/commons"
@@ -120,11 +127,14 @@ export default async function ListingDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Action button */}
-        {item.status === "available" && (
-          <Button className="w-full" size="lg">
+        {/* Action button — only show if available and not the owner */}
+        {item.status === "available" && !isOwner && (
+          <Link
+            href={`/commons/borrow/${item.id}`}
+            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary/30"
+          >
             Request to Borrow
-          </Button>
+          </Link>
         )}
       </div>
     </div>
