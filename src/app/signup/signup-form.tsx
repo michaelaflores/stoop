@@ -1,17 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export function SignupForm() {
-  const router = useRouter();
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,6 +23,7 @@ export function SignupForm() {
       password,
       options: {
         data: { display_name: displayName },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
 
@@ -33,8 +33,35 @@ export function SignupForm() {
       return;
     }
 
-    router.push("/onboarding");
-    router.refresh();
+    setEmailSent(true);
+    setLoading(false);
+  }
+
+  if (emailSent) {
+    return (
+      <div className="text-center space-y-3">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sage/10">
+          <svg
+            className="h-6 w-6 text-sage"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+        <h2 className="text-lg font-semibold">Check your email</h2>
+        <p className="text-sm text-muted">
+          We sent a confirmation link to <strong>{email}</strong>. Click the
+          link to activate your account and get started.
+        </p>
+      </div>
+    );
   }
 
   return (
