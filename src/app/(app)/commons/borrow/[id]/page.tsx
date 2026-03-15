@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { BorrowRequestForm } from "@/components/borrow/borrow-request-form";
@@ -11,6 +11,26 @@ interface Props {
 export default async function BorrowPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  // Check for existing active borrow request — prevent duplicates
+  const { data: existingBorrow } = await supabase
+    .from("borrows")
+    .select("id")
+    .eq("listing_id", id)
+    .eq("borrower_id", user.id)
+    .in("status", ["pending", "approved", "active"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingBorrow) {
+    // Already have an active request — send back to listing detail
+    redirect(`/commons/${id}`);
+  }
 
   const { data: listing } = await supabase
     .from("listings")

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ModalOverlay } from "./modal-overlay";
 
 interface Props {
@@ -9,6 +9,25 @@ interface Props {
 export default async function BorrowModalPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  // Check for existing active borrow request — prevent duplicates
+  const { data: existingBorrow } = await supabase
+    .from("borrows")
+    .select("id")
+    .eq("listing_id", id)
+    .eq("borrower_id", user.id)
+    .in("status", ["pending", "approved", "active"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingBorrow) {
+    redirect(`/commons/${id}`);
+  }
 
   const { data: listing } = await supabase
     .from("listings")

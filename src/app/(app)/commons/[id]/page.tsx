@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle, Package, RotateCcw } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CategoryBadge } from "@/components/listings/category-badge";
 import { ListingPlaceholder } from "@/components/listings/listing-placeholder";
 import {
   REPUTATION_TIER_LABELS,
   type ListingWithOwner,
+  type BorrowStatus,
 } from "@/lib/supabase/types";
 import { ListingDetailRealtime } from "./realtime-wrapper";
 
@@ -37,6 +38,21 @@ export default async function ListingDetailPage({ params }: Props) {
   const item = listing as ListingWithOwner;
   const photoUrl = item.photo_urls?.[0];
   const isOwner = user?.id === item.owner_id;
+
+  // Check for existing borrow request from this user
+  let existingBorrow: { id: string; status: BorrowStatus } | null = null;
+  if (user && !isOwner) {
+    const { data: borrow } = await supabase
+      .from("borrows")
+      .select("id, status")
+      .eq("listing_id", id)
+      .eq("borrower_id", user.id)
+      .in("status", ["pending", "approved", "active"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    existingBorrow = borrow;
+  }
 
   return (
     <div className="mx-auto max-w-lg px-4 py-4">
@@ -120,15 +136,55 @@ export default async function ListingDetailPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Action button — only show if available and not the owner */}
-        {item.status === "available" && !isOwner && (
+        {/* Action button / existing request status */}
+        {!isOwner && existingBorrow ? (
+          <div className="card flex items-center gap-3 border-primary/20 bg-primary/5 p-4">
+            {existingBorrow.status === "pending" && (
+              <>
+                <Clock size={20} className="shrink-0 text-accent" />
+                <div>
+                  <p className="text-sm font-medium">Request pending</p>
+                  <p className="text-xs text-muted">
+                    Waiting for {item.profiles.display_name} to respond. Check your{" "}
+                    <Link href="/profile" className="text-primary underline">profile</Link>{" "}
+                    for updates.
+                  </p>
+                </div>
+              </>
+            )}
+            {existingBorrow.status === "approved" && (
+              <>
+                <CheckCircle size={20} className="shrink-0 text-secondary" />
+                <div>
+                  <p className="text-sm font-medium text-secondary">Approved</p>
+                  <p className="text-xs text-muted">
+                    Ready for pickup. Confirm in your{" "}
+                    <Link href="/profile" className="text-primary underline">profile</Link>.
+                  </p>
+                </div>
+              </>
+            )}
+            {existingBorrow.status === "active" && (
+              <>
+                <Package size={20} className="shrink-0 text-primary" />
+                <div>
+                  <p className="text-sm font-medium text-primary">Currently borrowing</p>
+                  <p className="text-xs text-muted">
+                    Return when done via your{" "}
+                    <Link href="/profile" className="text-primary underline">profile</Link>.
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        ) : item.status === "available" && !isOwner ? (
           <Link
             href={`/commons/borrow/${item.id}`}
             className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
             Request to Borrow
           </Link>
-        )}
+        ) : null}
       </div>
     </div>
   );
