@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, Settings, Trophy, User } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -67,6 +67,14 @@ export function UserDropdown({ displayName, avatarUrl }: UserDropdownProps) {
           >
             <User size={14} />
             Profile
+          </Link>
+          <Link
+            href="/leaderboard"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-border"
+          >
+            <Trophy size={14} />
+            Leaderboard
           </Link>
           <button
             disabled

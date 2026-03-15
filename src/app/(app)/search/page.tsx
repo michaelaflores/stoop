@@ -1,13 +1,15 @@
-import { Search } from "lucide-react";
+import { Suspense } from "react";
+import { SearchForm } from "./search-form";
 
 export default function SearchPage() {
   return (
-    <div className="flex min-h-[60vh] items-center justify-center px-4">
-      <div className="card p-8 text-center">
-        <Search size={32} className="mx-auto text-muted" />
-        <h1 className="mt-3 text-lg font-bold">Search</h1>
-        <p className="mt-1 text-sm text-muted">Coming soon</p>
-      </div>
+    <div className="mx-auto max-w-xl px-4 py-6">
+      <h1 className="mb-4 text-lg font-bold font-display">
+        Neighborhood Memory
+      </h1>
+      <Suspense>
+        <SearchForm />
+      </Suspense>
     </div>
   );
 }

@@ -221,3 +221,25 @@ export const ALERT_SEVERITY_LABELS: Record<AlertSeverity, string> = {
   warning: "Warning",
   urgent: "Urgent",
 };
+
+// ----- Search & Leaderboard -----
+
+export interface SearchResult {
+  id: string;
+  source_type: "listing" | "post" | "request";
+  title: string;
+  snippet: string;
+  author_name: string;
+  author_avatar: string | null;
+  category: string;
+  created_at: string;
+  relevance: number;
+}
+
+export interface LeaderboardEntry {
+  user_id: string;
+  display_name: string;
+  avatar_url: string | null;
+  reputation_score: number;
+  reputation_tier: ReputationTier;
+}
