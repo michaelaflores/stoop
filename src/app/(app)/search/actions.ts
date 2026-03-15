@@ -41,26 +41,44 @@ export async function semanticSearchNeighborhood(query: string) {
 
   if (!profile?.neighborhood_id) return [];
 
-  const { data, error } = await supabase.functions.invoke("search", {
-    body: {
-      search: query,
-      neighborhood_id: profile.neighborhood_id,
-      match_threshold: 0.4,
-      limit: 30,
-    },
-  });
+  // Call the Edge Function directly via fetch to avoid SSR client
+  // body-forwarding issues with supabase.functions.invoke
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-  if (error) {
-    console.error("Semantic search error:", error);
+  try {
+    const res = await fetch(`${supabaseUrl}/functions/v1/search`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${anonKey}`,
+        apikey: anonKey,
+      },
+      body: JSON.stringify({
+        search: query,
+        neighborhood_id: profile.neighborhood_id,
+        match_threshold: 0.4,
+        limit: 30,
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("Semantic search error:", res.status, await res.text());
+      return [];
+    }
+
+    const data = await res.json();
+
+    // Map the response to match SearchResult interface
+    // The Edge Function returns { search, result: [...] }
+    const results = data?.result ?? [];
+    return results.map((r: Record<string, unknown>) => ({
+      ...r,
+      // Map similarity → relevance for UI consistency
+      relevance: r.similarity ?? 0,
+    }));
+  } catch (err) {
+    console.error("Semantic search error:", err);
     return [];
   }
-
-  // Map the response to match SearchResult interface
-  // The Edge Function returns { search, result: [...] }
-  const results = data?.result ?? [];
-  return results.map((r: Record<string, unknown>) => ({
-    ...r,
-    // Map similarity → relevance for UI consistency
-    relevance: r.similarity ?? 0,
-  }));
 }
