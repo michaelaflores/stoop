@@ -17,7 +17,7 @@ export default async function LoginPage() {
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="card w-full max-w-sm p-6">
         <div className="mb-6 text-center">
-          <h1 className="text-xl font-bold text-primary">Stoop</h1>
+          <h1 className="text-xl font-bold text-primary font-display">Stoop</h1>
           <p className="mt-1 text-sm text-muted">
             Sign in to your neighborhood
           </p>

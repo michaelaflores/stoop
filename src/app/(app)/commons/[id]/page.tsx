@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { CategoryBadge } from "@/components/listings/category-badge";
+import { ListingPlaceholder } from "@/components/listings/listing-placeholder";
 import {
   REPUTATION_TIER_LABELS,
   type ListingWithOwner,
@@ -60,15 +61,7 @@ export default async function ListingDetailPage({ params }: Props) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <div
-              className="flex h-full w-full items-center justify-center text-sm text-muted"
-              style={{
-                background:
-                  "linear-gradient(135deg, #f0ece6 0%, #e8dfd5 50%, #ddd4c8 100%)",
-              }}
-            >
-              No photo
-            </div>
+            <ListingPlaceholder category={item.category} className="h-full w-full" />
           )}
         </div>
       </div>
@@ -86,7 +79,7 @@ export default async function ListingDetailPage({ params }: Props) {
           </span>
         </div>
 
-        <h1 className="text-lg font-bold">{item.title}</h1>
+        <h1 className="text-lg font-bold font-display">{item.title}</h1>
 
         <p className="text-sm leading-relaxed text-muted">
           {item.description}

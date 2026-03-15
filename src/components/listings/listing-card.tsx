@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { CategoryBadge } from "./category-badge";
+import { ListingPlaceholder } from "./listing-placeholder";
 import type { ListingWithOwner } from "@/lib/supabase/types";
 
 interface ListingCardProps {
@@ -25,13 +26,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
             className="h-full w-full object-cover"
           />
         ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background:
-                "linear-gradient(135deg, #f0ece6 0%, #e8dfd5 50%, #ddd4c8 100%)",
-            }}
-          />
+          <ListingPlaceholder category={listing.category} className="h-full w-full" />
         )}
       </div>
 

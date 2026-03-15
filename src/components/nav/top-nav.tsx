@@ -23,7 +23,7 @@ export function TopNav({ displayName, avatarUrl }: TopNavProps) {
   return (
     <header className="hidden md:flex h-14 items-center border-b border-border bg-surface px-6">
       <Link href="/commons" className="mr-8 flex items-center gap-2">
-        <span className="text-lg font-bold text-primary">Stoop</span>
+        <span className="text-lg font-bold text-primary font-display">Stoop</span>
       </Link>
 
       <nav className="flex items-center gap-1">

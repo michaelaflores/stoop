@@ -40,9 +40,9 @@ export function SignupForm() {
   if (emailSent) {
     return (
       <div className="text-center space-y-3">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sage/10">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10">
           <svg
-            className="h-6 w-6 text-sage"
+            className="h-6 w-6 text-secondary"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

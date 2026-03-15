@@ -79,7 +79,7 @@ export default async function ProfilePage() {
           </div>
         )}
         <div>
-          <h1 className="text-lg font-bold">{profile.display_name}</h1>
+          <h1 className="text-lg font-bold font-display">{profile.display_name}</h1>
           <div className="mt-0.5 flex items-center gap-2">
             <span className="badge badge-category">
               {REPUTATION_TIER_LABELS[profile.reputation_tier as ReputationTier]}

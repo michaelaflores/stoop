@@ -25,7 +25,7 @@ export function BottomTabs({ displayName, avatarUrl }: BottomTabsProps) {
       {/* Mobile top bar with avatar */}
       <div className="fixed top-0 left-0 right-0 z-50 flex md:hidden h-12 items-center justify-between border-b border-border bg-surface px-4">
         <Link href="/commons" className="flex items-center gap-2">
-          <span className="text-base font-bold text-primary">Stoop</span>
+          <span className="text-base font-bold text-primary font-display">Stoop</span>
         </Link>
         <UserDropdown displayName={displayName} avatarUrl={avatarUrl} />
       </div>
