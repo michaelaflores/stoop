@@ -1,26 +1,79 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf8f5;
+  --foreground: #2d2319;
+  --surface: #ffffff;
+  --border: #f0ece6;
+  --primary: #c2704e;
+  --primary-hover: #a85d3e;
+  --secondary: #7a9e7e;
+  --secondary-hover: #6a8e6e;
+  --muted: #8a7e72;
+  --alert: #c44d3d;
+  --card-shadow: 0 1px 3px rgba(45, 35, 25, 0.06);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-muted: var(--muted);
+  --color-alert: var(--alert);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Satoshi", system-ui, sans-serif;
+}
+
+/* Warm card style */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: var(--card-shadow);
+}
+
+/* Category badge base */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Status badges */
+.badge-available {
+  background: #eef5ef;
+  color: #4a7a4e;
+}
+
+.badge-borrowed {
+  background: #fef3ee;
+  color: #c2704e;
+}
+
+.badge-category {
+  background: #f5f0eb;
+  color: #6b5d52;
+}
+
+/* Bottom tab bar safe area for mobile */
+.pb-tabs {
+  padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 768px) {
+  .pb-tabs {
+    padding-bottom: 0;
+  }
 }

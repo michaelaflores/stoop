@@ -1,16 +1,29 @@
-// Auto-generated types will go here.
-// Run `npx supabase gen types typescript --project-id <project-id>` to generate.
+// Manual types matching supabase/migrations/00001_initial_schema.sql
+// Replace with auto-generated types later:
+//   npx supabase gen types typescript --project-id <project-id> > src/lib/supabase/database.types.ts
 
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+export type ListingType = "item" | "skill";
+export type ListingStatus = "available" | "borrowed" | "unavailable";
+export type ListingCategory =
+  | "tools"
+  | "kitchen"
+  | "outdoor"
+  | "recreation"
+  | "household"
+  | "electronics"
+  | "skill_handyman"
+  | "skill_tutoring"
+  | "skill_pet"
+  | "skill_tech"
+  | "skill_other";
 
-// Placeholder types until we generate from the live schema.
-// These match the schema defined in supabase/migrations/.
+export type BorrowStatus =
+  | "pending"
+  | "approved"
+  | "active"
+  | "returned"
+  | "declined"
+  | "cancelled";
 
 export type PostType =
   | "discussion"
@@ -27,6 +40,16 @@ export type ReputationTier =
   | "block_captain"
   | "neighborhood_legend";
 
+// ----- Row types -----
+
+export interface Neighborhood {
+  id: string;
+  name: string;
+  slug: string;
+  // boundary and center are PostGIS geometry — not returned by default
+  created_at: string;
+}
+
 export interface Profile {
   id: string;
   display_name: string;
@@ -38,11 +61,60 @@ export interface Profile {
   updated_at: string;
 }
 
-export interface Neighborhood {
+export interface Listing {
   id: string;
-  name: string;
-  slug: string;
+  owner_id: string;
+  neighborhood_id: string;
+  type: ListingType;
+  category: ListingCategory;
+  title: string;
+  description: string;
+  condition: string | null;
+  max_borrow_days: number;
+  photo_urls: string[] | null;
+  status: ListingStatus;
+  borrow_count: number;
+  avg_rating: number | null;
+  is_active: boolean;
   created_at: string;
+  updated_at: string;
+}
+
+export interface ListingWithOwner extends Listing {
+  profiles: Pick<Profile, "display_name" | "avatar_url" | "reputation_tier">;
+}
+
+export interface Borrow {
+  id: string;
+  listing_id: string;
+  borrower_id: string;
+  lender_id: string;
+  status: BorrowStatus;
+  message: string | null;
+  pickup_date: string | null;
+  expected_return_date: string | null;
+  actual_return_date: string | null;
+  borrower_confirmed_pickup: boolean;
+  lender_confirmed_pickup: boolean;
+  borrower_confirmed_return: boolean;
+  lender_confirmed_return: boolean;
+  borrower_rating: number | null;
+  lender_rating: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Request {
+  id: string;
+  requester_id: string;
+  neighborhood_id: string;
+  title: string;
+  description: string;
+  needed_by: string | null;
+  is_fulfilled: boolean;
+  fulfilled_by_listing_id: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Post {
@@ -79,3 +151,43 @@ export interface Vote {
   user_id: string;
   created_at: string;
 }
+
+// ----- Helpers -----
+
+export const LISTING_CATEGORY_LABELS: Record<ListingCategory, string> = {
+  tools: "Tools",
+  kitchen: "Kitchen",
+  outdoor: "Outdoor",
+  recreation: "Recreation",
+  household: "Household",
+  electronics: "Electronics",
+  skill_handyman: "Handyman",
+  skill_tutoring: "Tutoring",
+  skill_pet: "Pet Care",
+  skill_tech: "Tech Help",
+  skill_other: "Other Skill",
+};
+
+export const ITEM_CATEGORIES: ListingCategory[] = [
+  "tools",
+  "kitchen",
+  "outdoor",
+  "recreation",
+  "household",
+  "electronics",
+];
+
+export const SKILL_CATEGORIES: ListingCategory[] = [
+  "skill_handyman",
+  "skill_tutoring",
+  "skill_pet",
+  "skill_tech",
+  "skill_other",
+];
+
+export const REPUTATION_TIER_LABELS: Record<ReputationTier, string> = {
+  new_neighbor: "New Neighbor",
+  regular: "Regular",
+  block_captain: "Block Captain",
+  neighborhood_legend: "Neighborhood Legend",
+};
