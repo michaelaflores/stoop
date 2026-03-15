@@ -57,6 +57,51 @@ BEGIN
   IF v_user5 IS NULL THEN v_user5 := v_user1; END IF;
 
   -- ============================================================
+  -- CLEANUP: Remove any previous seed data so script is re-runnable
+  -- ============================================================
+  DELETE FROM votes WHERE post_id IN (SELECT id FROM posts WHERE title IN (
+    'What''s happening with the old Frankford Chocolate Factory?',
+    'Best coffee spots for remote work?',
+    'Block Party on Palmer Street',
+    'Community Garden Cleanup Day',
+    'Water main break on Girard Avenue',
+    'Package thefts on E Berks Street',
+    'Heads up: street cleaning schedule changed',
+    'Seriously try the new banh mi place on Girard',
+    'Found: Orange tabby cat near Frankford & Norris',
+    'Hidden gem: La Colombiana on Front St'
+  ));
+  DELETE FROM comments WHERE post_id IN (SELECT id FROM posts WHERE title IN (
+    'What''s happening with the old Frankford Chocolate Factory?',
+    'Best coffee spots for remote work?',
+    'Block Party on Palmer Street',
+    'Community Garden Cleanup Day',
+    'Water main break on Girard Avenue',
+    'Package thefts on E Berks Street',
+    'Heads up: street cleaning schedule changed',
+    'Seriously try the new banh mi place on Girard',
+    'Found: Orange tabby cat near Frankford & Norris',
+    'Hidden gem: La Colombiana on Front St'
+  ));
+  DELETE FROM alert_responses WHERE post_id IN (SELECT id FROM posts WHERE title IN (
+    'Water main break on Girard Avenue',
+    'Package thefts on E Berks Street',
+    'Heads up: street cleaning schedule changed'
+  ));
+  DELETE FROM posts WHERE title IN (
+    'What''s happening with the old Frankford Chocolate Factory?',
+    'Best coffee spots for remote work?',
+    'Block Party on Palmer Street',
+    'Community Garden Cleanup Day',
+    'Water main break on Girard Avenue',
+    'Package thefts on E Berks Street',
+    'Heads up: street cleaning schedule changed',
+    'Seriously try the new banh mi place on Girard',
+    'Found: Orange tabby cat near Frankford & Norris',
+    'Hidden gem: La Colombiana on Front St'
+  );
+
+  -- ============================================================
   -- POSTS — Cover all 5 types with varied content
   -- ============================================================
 
