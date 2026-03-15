@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Plus, MapPin } from "lucide-react";
+import { Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { ListingCard } from "@/components/listings/listing-card";
 import { CategoryFilter } from "./category-filter";
+import { CommonsMap } from "./commons-map";
 import type { ListingWithOwner, ListingCategory } from "@/lib/supabase/types";
 
 interface Props {
@@ -23,10 +24,13 @@ export default async function CommonsPage({ searchParams }: Props) {
     .eq("id", user!.id)
     .single();
 
+  const neighborhoodId = profile!.neighborhood_id!;
+
+  // Fetch listings
   let query = supabase
     .from("listings")
     .select("*, profiles!listings_owner_id_fkey(display_name, avatar_url, reputation_tier)")
-    .eq("neighborhood_id", profile!.neighborhood_id!)
+    .eq("neighborhood_id", neighborhoodId)
     .eq("is_active", true)
     .order("created_at", { ascending: false });
 
@@ -36,14 +40,26 @@ export default async function CommonsPage({ searchParams }: Props) {
 
   const { data: listings } = await query;
 
+  // Fetch map data via RPC
+  const { data: mapData } = await supabase.rpc("get_neighborhood_map_data", {
+    target_neighborhood_id: neighborhoodId,
+  });
+
+  // Fetch neighborhood name
+  const { data: neighborhood } = await supabase
+    .from("neighborhoods")
+    .select("name")
+    .eq("id", neighborhoodId)
+    .single();
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-4">
-      {/* Map placeholder */}
-      <div className="card mb-4 flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-[#e8e0d5] to-[#d5cdc2] md:h-56">
-        <div className="flex flex-col items-center gap-2 text-muted">
-          <MapPin size={28} />
-          <span className="text-sm font-medium">Map coming soon</span>
-        </div>
+      {/* Map */}
+      <div className="mb-4">
+        <CommonsMap
+          mapData={mapData}
+          neighborhoodName={neighborhood?.name ?? "Your Neighborhood"}
+        />
       </div>
 
       {/* Category filter */}

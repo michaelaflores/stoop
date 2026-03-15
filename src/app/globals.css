@@ -77,3 +77,21 @@ body {
     padding-bottom: 0;
   }
 }
+
+/* MapLibre popup styling */
+.stoop-popup .maplibregl-popup-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  box-shadow: 0 2px 8px rgba(45, 35, 25, 0.12);
+}
+
+.stoop-popup .maplibregl-popup-tip {
+  border-top-color: var(--surface);
+}
+
+/* Hide MapLibre default logo */
+.maplibregl-ctrl-logo {
+  display: none !important;
+}
