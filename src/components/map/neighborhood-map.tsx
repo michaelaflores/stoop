@@ -45,12 +45,20 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const router = useRouter();
+  // Keep a stable ref so the click handler always uses the latest router
+  // without it being a useEffect dependency
+  const routerRef = useRef(router);
+  routerRef.current = router;
+  // Snapshot mapData on first render — the map initializes once and never tears down
+  const mapDataRef = useRef(mapData);
 
   useEffect(() => {
     if (!mapContainer.current) return;
 
+    const data = mapDataRef.current;
+
     // If no map data at all, show fallback
-    if (!mapData || !mapData.center) {
+    if (!data || !data.center) {
       setError(true);
       return;
     }
@@ -87,7 +95,7 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
             },
           ],
         },
-        center: mapData.center,
+        center: data.center,
         zoom: 14,
         attributionControl: false,
         maxZoom: 17,
@@ -101,13 +109,13 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
 
       m.on("load", () => {
         // Add neighborhood boundary
-        if (mapData.boundary) {
+        if (data.boundary) {
           m.addSource("neighborhood-boundary", {
             type: "geojson",
             data: {
               type: "Feature",
               properties: {},
-              geometry: mapData.boundary,
+              geometry: data.boundary,
             },
           });
 
@@ -135,10 +143,10 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
         }
 
         // Add listing pins
-        if (mapData.listings && mapData.listings.length > 0) {
+        if (data.listings && data.listings.length > 0) {
           const geojson: GeoJSON.FeatureCollection = {
             type: "FeatureCollection",
-            features: mapData.listings.map((listing) => ({
+            features: data.listings.map((listing) => ({
               type: "Feature",
               properties: {
                 id: listing.id,
@@ -189,7 +197,7 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
           m.on("click", "listing-circles", (e) => {
             const feature = e.features?.[0];
             if (feature?.properties?.id) {
-              router.push(`/commons/${feature.properties.id}`);
+              routerRef.current.push(`/commons/${feature.properties.id}`);
             }
           });
 
@@ -238,10 +246,11 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
     } catch {
       setError(true);
     }
-  }, [mapData, router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Initialize once — map data is captured via ref, router via ref
 
   // Fallback when no map data
-  if (error || !mapData?.center) {
+  if (error || !mapDataRef.current?.center) {
     return (
       <div className="card flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-[#e8e0d5] to-[#d5cdc2] md:h-56">
         <div className="pointer-events-none absolute left-3 top-3 z-10">

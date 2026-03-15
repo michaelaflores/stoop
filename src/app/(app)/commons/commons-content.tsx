@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useMemo, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { ListingCard } from "@/components/listings/listing-card";
@@ -36,6 +36,10 @@ export function CommonsContent({
     initialCategory
   );
 
+  // Stable refs for map props — these never change after initial render
+  const stableMapData = useRef(mapData).current;
+  const stableNeighborhoodName = useRef(neighborhoodName).current;
+
   const handleCategoryChange = useCallback(
     (category: string | undefined) => {
       setActiveCategory(category);
@@ -53,11 +57,11 @@ export function CommonsContent({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-4">
-      {/* Map — stable, never re-renders on filter change */}
+      {/* Map — stable refs, memo'd component, never re-renders on filter change */}
       <div className="mb-4">
         <CommonsMap
-          mapData={mapData}
-          neighborhoodName={neighborhoodName}
+          mapData={stableMapData}
+          neighborhoodName={stableNeighborhoodName}
         />
       </div>
 

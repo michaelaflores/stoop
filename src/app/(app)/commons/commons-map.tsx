@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import dynamic from "next/dynamic";
 
 const NeighborhoodMap = dynamic(
@@ -37,11 +38,11 @@ interface CommonsMapProps {
   neighborhoodName: string;
 }
 
-export function CommonsMap({ mapData, neighborhoodName }: CommonsMapProps) {
+export const CommonsMap = memo(function CommonsMap({ mapData, neighborhoodName }: CommonsMapProps) {
   return (
     <NeighborhoodMap
       mapData={mapData as MapData | null}
       neighborhoodName={neighborhoodName}
     />
   );
-}
+});
