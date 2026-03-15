@@ -58,10 +58,10 @@ export function StoopPresence({ neighborhoodId, userId, displayName, avatarUrl }
   if (onlineCount === 0) return null;
 
   return (
-    <div className="mb-4 flex items-center gap-2 rounded-lg bg-secondary/10 px-3 py-2">
+    <div className="mb-4 flex items-center gap-2 rounded-lg bg-accent/10 px-3 py-2">
       <span className="relative flex h-2.5 w-2.5">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-secondary opacity-75" />
-        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-secondary" />
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
       </span>
 
       {users.length > 0 && (
@@ -86,7 +86,7 @@ export function StoopPresence({ neighborhoodId, userId, displayName, avatarUrl }
         </div>
       )}
 
-      <span className="text-sm text-secondary font-medium">
+      <span className="text-sm text-foreground/70 font-medium">
         {onlineCount} {onlineCount === 1 ? "neighbor" : "neighbors"} on the stoop
       </span>
     </div>

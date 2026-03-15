@@ -33,7 +33,7 @@ DECLARE
 BEGIN
   -- Backfill listings
   FOR rec IN SELECT l.id, l.title, l.description FROM listings l WHERE l.embedding IS NULL LOOP
-    PERFORM net.http_post(
+    PERFORM extensions.http_post(
       url := project_url || '/functions/v1/generate-embedding',
       body := jsonb_build_object(
         'type', 'INSERT',
@@ -52,7 +52,7 @@ BEGIN
 
   -- Backfill posts
   FOR rec IN SELECT po.id, po.title, po.body FROM posts po WHERE po.embedding IS NULL LOOP
-    PERFORM net.http_post(
+    PERFORM extensions.http_post(
       url := project_url || '/functions/v1/generate-embedding',
       body := jsonb_build_object(
         'type', 'INSERT',
@@ -71,7 +71,7 @@ BEGIN
 
   -- Backfill requests
   FOR rec IN SELECT r.id, r.title, r.description FROM requests r WHERE r.embedding IS NULL LOOP
-    PERFORM net.http_post(
+    PERFORM extensions.http_post(
       url := project_url || '/functions/v1/generate-embedding',
       body := jsonb_build_object(
         'type', 'INSERT',

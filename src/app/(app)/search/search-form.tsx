@@ -94,7 +94,7 @@ export function SearchForm() {
           className={cn(
             "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
             mode === "semantic"
-              ? "bg-[#3ECF8E] text-white"
+              ? "bg-primary text-white"
               : "bg-border text-muted hover:text-foreground"
           )}
         >

@@ -108,7 +108,7 @@ export function SearchResults({ results, isSemanticMode = false }: SearchResults
                   </span>
 
                   {isSemanticMode && result.relevance > 0 && (
-                    <span className="inline-flex items-center gap-0.5 rounded-full bg-[#3ECF8E]/10 px-1.5 py-0.5 text-[10px] font-semibold text-[#3ECF8E]">
+                    <span className="inline-flex items-center gap-0.5 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-[#7D6820]">
                       {Math.round(result.relevance * 100)}% match
                     </span>
                   )}
