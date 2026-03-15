@@ -40,16 +40,18 @@ export function UserDropdown({ displayName, avatarUrl }: UserDropdownProps) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-lg p-1 transition-colors hover:bg-border"
+        className="flex items-center gap-2 rounded-lg p-1.5 transition-colors hover:bg-border/60 active:bg-border min-h-[44px] min-w-[44px] justify-center"
+        aria-label="User menu"
+        aria-expanded={open}
       >
         {avatarUrl ? (
           <img
             src={avatarUrl}
             alt={displayName}
-            className="h-7 w-7 rounded-full object-cover"
+            className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
           />
         ) : (
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-medium text-primary">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
             {displayName.charAt(0).toUpperCase()}
           </div>
         )}
@@ -59,44 +61,44 @@ export function UserDropdown({ displayName, avatarUrl }: UserDropdownProps) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-1 w-48 rounded-lg border border-border bg-surface py-1 shadow-lg">
+        <div className="absolute right-0 top-full z-50 mt-2 w-52 rounded-xl border border-border bg-surface py-1.5 shadow-[var(--shadow-dropdown)]">
           <Link
             href="/profile"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-border"
+            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-border/50 transition-colors"
           >
-            <User size={14} />
+            <User size={16} />
             Profile
           </Link>
           <Link
             href="/leaderboard"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-border"
+            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-border/50 transition-colors"
           >
-            <Trophy size={14} />
+            <Trophy size={16} />
             Leaderboard
           </Link>
           <Link
             href="/supabase"
             onClick={() => setOpen(false)}
-            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-border"
+            className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium hover:bg-border/50 transition-colors"
           >
-            <Blocks size={14} />
+            <Blocks size={16} />
             Built with Supabase
           </Link>
           <button
             disabled
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-muted opacity-50"
+            className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium text-muted opacity-50"
           >
-            <Settings size={14} />
+            <Settings size={16} />
             Settings
           </button>
-          <div className="my-1 border-t border-border" />
+          <div className="my-1.5 border-t border-border" />
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-alert hover:bg-border"
+            className="flex w-full items-center gap-3 px-4 py-2.5 text-sm font-medium text-alert hover:bg-alert/5 transition-colors"
           >
-            <LogOut size={14} />
+            <LogOut size={16} />
             Sign out
           </button>
         </div>

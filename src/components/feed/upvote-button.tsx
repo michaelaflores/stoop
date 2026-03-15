@@ -57,13 +57,14 @@ export function UpvoteButton({ postId, initialCount, hasVoted, userId }: UpvoteB
       onClick={handleToggle}
       disabled={loading}
       className={cn(
-        "flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-medium transition-colors",
+        "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors min-h-[40px] active:scale-[0.96]",
         voted
           ? "bg-primary/10 text-primary"
-          : "text-muted hover:text-foreground hover:bg-border"
+          : "text-muted hover:text-foreground hover:bg-border/60"
       )}
+      aria-label={voted ? "Remove upvote" : "Upvote"}
     >
-      <ArrowBigUp size={18} className={cn(voted && "fill-primary")} />
+      <ArrowBigUp size={20} className={cn(voted && "fill-primary")} />
       {count}
     </button>
   );

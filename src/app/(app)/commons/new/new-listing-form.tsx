@@ -113,9 +113,9 @@ export function NewListingForm({
             setType("item");
             setCategory("tools");
           }}
-          className={`flex-1 rounded-lg py-2 text-sm font-medium transition-colors ${
+          className={`flex-1 rounded-lg py-2.5 text-sm font-medium transition-colors min-h-[44px] active:scale-[0.98] ${
             type === "item"
-              ? "bg-primary text-white"
+              ? "bg-primary text-white shadow-sm"
               : "border border-border bg-surface text-muted"
           }`}
         >
@@ -127,9 +127,9 @@ export function NewListingForm({
             setType("skill");
             setCategory("skill_handyman");
           }}
-          className={`flex-1 rounded-lg py-2 text-sm font-medium transition-colors ${
+          className={`flex-1 rounded-lg py-2.5 text-sm font-medium transition-colors min-h-[44px] active:scale-[0.98] ${
             type === "skill"
-              ? "bg-primary text-white"
+              ? "bg-primary text-white shadow-sm"
               : "border border-border bg-surface text-muted"
           }`}
         >
@@ -138,7 +138,7 @@ export function NewListingForm({
       </div>
 
       <div>
-        <label htmlFor="title" className="mb-1 block text-sm font-medium">
+        <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-foreground">
           Title
         </label>
         <input
@@ -147,7 +147,7 @@ export function NewListingForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder={
             type === "item" ? 'e.g., "DeWalt Power Drill"' : 'e.g., "Dog Walking"'
           }
@@ -155,14 +155,14 @@ export function NewListingForm({
       </div>
 
       <div>
-        <label htmlFor="category" className="mb-1 block text-sm font-medium">
+        <label htmlFor="category" className="mb-1.5 block text-sm font-medium text-foreground">
           Category
         </label>
         <select
           id="category"
           value={category}
           onChange={(e) => setCategory(e.target.value as ListingCategory)}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         >
           {categories.map((cat) => (
             <option key={cat} value={cat}>
@@ -175,7 +175,7 @@ export function NewListingForm({
       <div>
         <label
           htmlFor="description"
-          className="mb-1 block text-sm font-medium"
+          className="mb-1.5 block text-sm font-medium text-foreground"
         >
           Description
         </label>
@@ -185,7 +185,7 @@ export function NewListingForm({
           onChange={(e) => setDescription(e.target.value)}
           required
           rows={3}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
           placeholder="Describe what you're sharing..."
         />
       </div>
@@ -194,7 +194,7 @@ export function NewListingForm({
         <div>
           <label
             htmlFor="condition"
-            className="mb-1 block text-sm font-medium"
+            className="mb-1.5 block text-sm font-medium text-foreground"
           >
             Condition
           </label>
@@ -203,7 +203,7 @@ export function NewListingForm({
             type="text"
             value={condition}
             onChange={(e) => setCondition(e.target.value)}
-            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+            className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder='e.g., "Like new", "Good", "Well-loved"'
           />
         </div>
@@ -212,7 +212,7 @@ export function NewListingForm({
       <div>
         <label
           htmlFor="maxBorrowDays"
-          className="mb-1 block text-sm font-medium"
+          className="mb-1.5 block text-sm font-medium text-foreground"
         >
           Max borrow days
         </label>
@@ -223,7 +223,7 @@ export function NewListingForm({
           max={90}
           value={maxBorrowDays}
           onChange={(e) => setMaxBorrowDays(Number(e.target.value))}
-          className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
       </div>
 

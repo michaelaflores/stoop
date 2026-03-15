@@ -67,20 +67,16 @@ export function CommonsContent({
 
       {/* Category filter */}
       <div
-        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2"
-        style={{
-          WebkitOverflowScrolling: "touch",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
+        className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 no-scrollbar"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         <button
           onClick={() => handleCategoryChange(undefined)}
           className={cn(
-            "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
+            "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors min-h-[40px] active:scale-[0.96]",
             !activeCategory
-              ? "bg-primary text-white"
-              : "bg-surface border border-border text-muted hover:text-foreground"
+              ? "bg-primary text-white shadow-sm"
+              : "bg-surface border border-border text-muted hover:text-foreground hover:border-foreground/20"
           )}
         >
           All
@@ -90,10 +86,10 @@ export function CommonsContent({
             key={cat}
             onClick={() => handleCategoryChange(cat)}
             className={cn(
-              "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
+              "shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors min-h-[40px] active:scale-[0.96]",
               activeCategory === cat
-                ? "bg-primary text-white"
-                : "bg-surface border border-border text-muted hover:text-foreground"
+                ? "bg-primary text-white shadow-sm"
+                : "bg-surface border border-border text-muted hover:text-foreground hover:border-foreground/20"
             )}
           >
             {LISTING_CATEGORY_LABELS[cat]}
@@ -121,10 +117,11 @@ export function CommonsContent({
       {/* Add listing FAB */}
       <Link
         href="/commons/new"
-        className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg active:scale-95 transition-transform hover:scale-105 md:bottom-6 md:h-12 md:w-12"
-        style={{ bottom: "calc(4.5rem + env(safe-area-inset-bottom, 0px))" }}
+        className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-[0_4px_14px_rgba(30,58,95,0.35)] active:scale-95 transition-all duration-200 hover:scale-105 hover:shadow-[0_6px_20px_rgba(30,58,95,0.45)] md:bottom-6 md:h-12 md:w-12"
+        style={{ bottom: "calc(5rem + env(safe-area-inset-bottom, 0px))" }}
+        aria-label="Add new listing"
       >
-        <Plus size={24} />
+        <Plus size={26} strokeWidth={2.5} />
       </Link>
     </div>
   );

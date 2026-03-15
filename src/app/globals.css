@@ -5,7 +5,7 @@
   --background: #FAF7F2;
   --foreground: #1A2233;
   --surface: #FFFFFF;
-  --border: #E8E2D8;
+  --border: #E0DAD0;
 
   /* Primary — deep Philly navy */
   --primary: #1E3A5F;
@@ -16,14 +16,24 @@
   --secondary-hover: #A83533;
 
   /* Secondary muted — warm brick (decorative, informational) */
-  --secondary-muted: #A86E5A;
+  --secondary-muted: #9A6350;
 
   /* Supporting */
-  --muted: #6B7280;
+  --muted: #5F6673;
   --accent: #B8933A;
   --alert: #C94340;
 
-  --card-shadow: 0 1px 3px rgba(26, 34, 51, 0.06);
+  /* Spacing & Radii */
+  --radius: 0.75rem;
+  --radius-sm: 0.5rem;
+  --radius-lg: 1rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(26, 34, 51, 0.05), 0 1px 2px rgba(26, 34, 51, 0.03);
+  --shadow-card-hover: 0 4px 12px rgba(26, 34, 51, 0.08), 0 2px 4px rgba(26, 34, 51, 0.04);
+  --shadow-dropdown: 0 4px 16px rgba(26, 34, 51, 0.12), 0 2px 4px rgba(26, 34, 51, 0.06);
+
+  /* Typography */
   --font-display: 'Archivo', system-ui, sans-serif;
   --font-body: 'General Sans', system-ui, sans-serif;
 }
@@ -41,12 +51,18 @@
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-alert: var(--alert);
+  --font-sans: 'General Sans', 'General Sans Fallback', system-ui, sans-serif;
+  --font-serif: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  --radius: var(--radius);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .font-display { font-family: var(--font-display); }
@@ -55,24 +71,35 @@ body {
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  box-shadow: var(--card-shadow);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.card-hover {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-dropdown);
 }
 
 /* Category badge base */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.125rem 0.5rem;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
 }
 
 /* Status badges */
 .badge-available {
   background: #E8F5EC;
-  color: #2D6A4F;
+  color: #1B7340;
 }
 
 .badge-borrowed {
@@ -82,17 +109,17 @@ body {
 
 .badge-category {
   background: #F0EBE2;
-  color: #5C5346;
+  color: #4A4639;
 }
 
 .badge-accent {
   background: rgba(184, 147, 58, 0.15);
-  color: #7D6820;
+  color: #6D5A1B;
 }
 
 /* Bottom tab bar safe area for mobile */
 .pb-tabs {
-  padding-bottom: calc(4rem + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 @media (min-width: 768px) {

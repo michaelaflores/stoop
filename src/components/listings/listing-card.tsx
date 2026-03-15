@@ -15,15 +15,18 @@ export function ListingCard({ listing, className }: ListingCardProps) {
   return (
     <Link
       href={`/commons/${listing.id}`}
-      className={cn("card block overflow-hidden transition-shadow hover:shadow-md active:shadow-md active:scale-[0.98]", className)}
+      className={cn(
+        "card group block overflow-hidden transition-all duration-200 hover:shadow-[var(--shadow-card-hover)] active:scale-[0.98]",
+        className
+      )}
     >
       {/* Photo area */}
-      <div className="aspect-[4/3] w-full overflow-hidden">
+      <div className="aspect-[4/3] w-full overflow-hidden bg-border/30">
         {photoUrl ? (
           <img
             src={photoUrl}
             alt={listing.title}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <ListingPlaceholder category={listing.category} className="h-full w-full" />
@@ -32,7 +35,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
 
       {/* Content */}
       <div className="p-3">
-        <div className="mb-1.5 flex items-center gap-1.5 flex-wrap">
+        <div className="mb-2 flex items-center gap-1.5 flex-wrap">
           <CategoryBadge category={listing.category} />
           <span
             className={cn(
@@ -46,15 +49,15 @@ export function ListingCard({ listing, className }: ListingCardProps) {
           </span>
         </div>
 
-        <h3 className="text-sm font-medium leading-tight text-foreground line-clamp-1">
+        <h3 className="text-sm font-semibold leading-snug text-foreground line-clamp-2">
           {listing.title}
         </h3>
 
         {listing.condition && (
-          <p className="mt-0.5 text-xs text-muted">{listing.condition}</p>
+          <p className="mt-1 text-xs text-muted">{listing.condition}</p>
         )}
 
-        <p className="mt-1.5 text-xs text-muted">
+        <p className="mt-2 text-xs font-medium text-muted">
           {listing.profiles.display_name}
         </p>
       </div>
