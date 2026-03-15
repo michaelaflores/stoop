@@ -51,7 +51,7 @@ export default async function BorrowPage({ params }: Props) {
     <div className="mx-auto max-w-md px-4 py-6">
       <Link
         href={`/commons/${id}`}
-        className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground"
+        className="mb-4 inline-flex items-center gap-1 py-1 text-sm text-muted hover:text-foreground active:text-foreground"
       >
         <ArrowLeft size={16} />
         Back to listing

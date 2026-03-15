@@ -27,7 +27,7 @@ export default async function LoginPage() {
 
         <p className="mt-4 text-center text-sm text-muted">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="font-medium text-primary hover:underline">
+          <Link href="/signup" className="inline-block py-1 font-medium text-primary hover:underline">
             Sign up
           </Link>
         </p>

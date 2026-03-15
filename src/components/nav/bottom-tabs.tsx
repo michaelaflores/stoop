@@ -39,7 +39,7 @@ export function BottomTabs({ displayName, avatarUrl }: BottomTabsProps) {
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex flex-col items-center gap-0.5 px-3 py-1 transition-colors",
+                "flex flex-col items-center justify-center gap-0.5 min-w-[64px] min-h-[44px] px-4 py-1.5 transition-colors",
                 isActive ? "text-primary" : "text-muted"
               )}
             >

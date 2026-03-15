@@ -18,11 +18,11 @@ const allCategories = [...ITEM_CATEGORIES, ...SKILL_CATEGORIES];
 
 export function CategoryFilter({ activeCategory }: CategoryFilterProps) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+    <div className="-mx-4 px-4 flex gap-2 overflow-x-auto pb-2" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       <Link
         href="/commons"
         className={cn(
-          "shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors",
+          "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
           !activeCategory
             ? "bg-primary text-white"
             : "bg-surface border border-border text-muted hover:text-foreground"
@@ -35,7 +35,7 @@ export function CategoryFilter({ activeCategory }: CategoryFilterProps) {
           key={cat}
           href={`/commons?category=${cat}`}
           className={cn(
-            "shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-colors",
+            "shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors",
             activeCategory === cat
               ? "bg-primary text-white"
               : "bg-surface border border-border text-muted hover:text-foreground"

@@ -61,7 +61,7 @@ export function AlertBanner({ neighborhoodId }: AlertBannerProps) {
           e.stopPropagation();
           setAlert(null);
         }}
-        className="shrink-0 rounded-full p-1 hover:bg-white/20"
+        className="shrink-0 rounded-full p-2 hover:bg-white/20 active:bg-white/20"
       >
         <X size={16} />
       </button>

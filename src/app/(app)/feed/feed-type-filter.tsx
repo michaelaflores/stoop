@@ -31,7 +31,7 @@ export function FeedTypeFilter() {
   }
 
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+    <div className="-mx-4 px-4 flex gap-2 overflow-x-auto pb-2" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
       {types.map((t) => (
         <button
           key={t.value}

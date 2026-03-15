@@ -48,13 +48,13 @@ export function ProfileTabs({
   return (
     <div>
       {/* Tab bar */}
-      <div className="mb-4 flex gap-1 overflow-x-auto border-b border-border">
+      <div className="mb-4 flex gap-1 overflow-x-auto border-b border-border" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActive(tab.key)}
             className={cn(
-              "relative whitespace-nowrap px-4 py-2 text-sm font-medium transition-colors",
+              "relative whitespace-nowrap px-4 py-2.5 text-sm font-medium transition-colors min-h-[44px]",
               active === tab.key
                 ? "text-primary"
                 : "text-muted hover:text-foreground"

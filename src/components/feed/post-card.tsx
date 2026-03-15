@@ -29,7 +29,7 @@ export function PostCard({ post, hasVoted, userId }: PostCardProps) {
   const author = post.profiles;
 
   return (
-    <Link href={`/feed/${post.id}`} className="card block p-4 transition-shadow hover:shadow-md">
+    <Link href={`/feed/${post.id}`} className="card block p-4 transition-shadow hover:shadow-md active:shadow-md active:scale-[0.99]">
       <div className="mb-2 flex items-center gap-2">
         <span className="badge badge-category">
           {POST_TYPE_ICONS[post.type]} {POST_TYPE_LABELS[post.type]}

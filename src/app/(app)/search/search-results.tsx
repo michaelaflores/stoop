@@ -60,7 +60,7 @@ export function SearchResults({ results }: SearchResultsProps) {
   return (
     <div className="space-y-3">
       {/* Filter tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex gap-2 overflow-x-auto pb-1" style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {TABS.map((tab) => (
           <button
             key={tab.value}
@@ -92,7 +92,7 @@ export function SearchResults({ results }: SearchResultsProps) {
           <Link
             key={`${result.source_type}-${result.id}`}
             href={getResultLink(result)}
-            className="card block p-4 transition-colors hover:bg-border/30"
+            className="card block p-4 transition-colors hover:bg-border/30 active:bg-border/30"
           >
             <div className="flex items-start gap-3">
               <div className="min-w-0 flex-1">

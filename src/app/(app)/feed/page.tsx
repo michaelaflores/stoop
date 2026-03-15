@@ -87,7 +87,8 @@ export default async function FeedPage({ searchParams }: FeedPageProps) {
       {/* New post FAB */}
       <Link
         href="/feed/new"
-        className="fixed bottom-20 right-4 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-transform hover:scale-105 md:bottom-6"
+        className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg active:scale-95 transition-transform hover:scale-105 md:bottom-6 md:h-12 md:w-12"
+        style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom, 0px))' }}
       >
         <Plus size={24} />
       </Link>

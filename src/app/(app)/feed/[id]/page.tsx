@@ -83,7 +83,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
 
       <Link
         href="/feed"
-        className="mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground"
+        className="mb-4 inline-flex items-center gap-1 py-1 text-sm text-muted hover:text-foreground active:text-foreground"
       >
         <ArrowLeft size={16} />
         Back to Feed

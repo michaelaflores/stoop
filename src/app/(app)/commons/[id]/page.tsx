@@ -61,7 +61,7 @@ export default async function ListingDetailPage({ params }: Props) {
       {/* Back link */}
       <Link
         href="/commons"
-        className="mb-3 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground"
+        className="mb-3 inline-flex items-center gap-1 py-1 text-sm text-muted hover:text-foreground active:text-foreground"
       >
         <ArrowLeft size={16} />
         Back to Commons
@@ -180,7 +180,7 @@ export default async function ListingDetailPage({ params }: Props) {
         ) : item.status === "available" && !isOwner ? (
           <Link
             href={`/commons/borrow/${item.id}`}
-            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3 text-base font-medium text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-primary-hover active:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary/30"
           >
             Request to Borrow
           </Link>

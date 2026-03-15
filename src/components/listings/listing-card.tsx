@@ -15,7 +15,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
   return (
     <Link
       href={`/commons/${listing.id}`}
-      className={cn("card block overflow-hidden transition-shadow hover:shadow-md", className)}
+      className={cn("card block overflow-hidden transition-shadow hover:shadow-md active:shadow-md active:scale-[0.98]", className)}
     >
       {/* Photo area */}
       <div className="aspect-[4/3] w-full overflow-hidden">
@@ -32,7 +32,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
 
       {/* Content */}
       <div className="p-3">
-        <div className="mb-1.5 flex items-center gap-2">
+        <div className="mb-1.5 flex items-center gap-1.5 flex-wrap">
           <CategoryBadge category={listing.category} />
           <span
             className={cn(

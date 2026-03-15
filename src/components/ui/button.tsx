@@ -10,16 +10,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover",
-  secondary: "bg-secondary text-white hover:bg-secondary-hover",
-  outline: "border border-border bg-surface text-foreground hover:bg-border",
-  ghost: "text-foreground hover:bg-border",
+  primary: "bg-primary text-white hover:bg-primary-hover active:bg-primary-hover",
+  secondary: "bg-secondary text-white hover:bg-secondary-hover active:bg-secondary-hover",
+  outline: "border border-border bg-surface text-foreground hover:bg-border active:bg-border",
+  ghost: "text-foreground hover:bg-border active:bg-border",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "px-3 py-1.5 text-sm",
-  md: "px-4 py-2 text-sm",
-  lg: "px-6 py-3 text-base",
+  sm: "px-3 py-2 text-sm min-h-[36px]",
+  md: "px-4 py-2.5 text-sm min-h-[40px]",
+  lg: "px-6 py-3 text-base min-h-[44px]",
 };
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
