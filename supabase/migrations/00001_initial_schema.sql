@@ -16,7 +16,7 @@ CREATE TABLE public.neighborhoods (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   slug TEXT UNIQUE NOT NULL,
-  boundary extensions.GEOMETRY(Polygon, 4326),
+  boundary extensions.GEOMETRY(MultiPolygon, 4326),
   center extensions.GEOMETRY(Point, 4326),
   created_at TIMESTAMPTZ DEFAULT now()
 );
