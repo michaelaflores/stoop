@@ -239,37 +239,43 @@ BEGIN
     (v_post_alert_urgent, v_user2),
     (v_post_alert_urgent, v_user3),
     (v_post_alert_urgent, v_user4),
-    (v_post_alert_urgent, v_user5);
+    (v_post_alert_urgent, v_user5)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 4 WHERE id = v_post_alert_urgent;
 
   -- Block party event popular
   INSERT INTO votes (post_id, user_id) VALUES
     (v_post_event, v_user1),
     (v_post_event, v_user3),
-    (v_post_event, v_user5);
+    (v_post_event, v_user5)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 3 WHERE id = v_post_event;
 
   -- Plumber recommendation
   INSERT INTO votes (post_id, user_id) VALUES
     (v_post_recommendation, v_user1),
     (v_post_recommendation, v_user2),
-    (v_post_recommendation, v_user5);
+    (v_post_recommendation, v_user5)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 3 WHERE id = v_post_recommendation;
 
   -- Chocolate factory discussion
   INSERT INTO votes (post_id, user_id) VALUES
     (v_post_discussion, v_user2),
-    (v_post_discussion, v_user4);
+    (v_post_discussion, v_user4)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 2 WHERE id = v_post_discussion;
 
   -- Coffee spots
   INSERT INTO votes (post_id, user_id) VALUES
-    (v_post_discussion2, v_user4);
+    (v_post_discussion2, v_user4)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 1 WHERE id = v_post_discussion2;
 
   -- Vet ask
   INSERT INTO votes (post_id, user_id) VALUES
-    (v_post_ask, v_user3);
+    (v_post_ask, v_user3)
+  ON CONFLICT (post_id, user_id) DO NOTHING;
   UPDATE posts SET upvote_count = 1 WHERE id = v_post_ask;
 
   -- ============================================================
