@@ -137,12 +137,20 @@ export interface Post {
   updated_at: string;
 }
 
+export interface PostWithAuthor extends Post {
+  profiles: Pick<Profile, "display_name" | "avatar_url" | "reputation_tier">;
+}
+
 export interface Comment {
   id: string;
   post_id: string;
   author_id: string;
   body: string;
   created_at: string;
+}
+
+export interface CommentWithAuthor extends Comment {
+  profiles: Pick<Profile, "display_name" | "avatar_url">;
 }
 
 export interface Vote {
@@ -190,4 +198,26 @@ export const REPUTATION_TIER_LABELS: Record<ReputationTier, string> = {
   regular: "Regular",
   block_captain: "Block Captain",
   neighborhood_legend: "Neighborhood Legend",
+};
+
+export const POST_TYPE_LABELS: Record<PostType, string> = {
+  discussion: "Discussion",
+  event: "Event",
+  alert: "Alert",
+  recommendation: "Recommendation",
+  ask: "Ask",
+};
+
+export const POST_TYPE_ICONS: Record<PostType, string> = {
+  discussion: "💬",
+  event: "📅",
+  alert: "⚠️",
+  recommendation: "⭐",
+  ask: "❓",
+};
+
+export const ALERT_SEVERITY_LABELS: Record<AlertSeverity, string> = {
+  info: "Info",
+  warning: "Warning",
+  urgent: "Urgent",
 };
