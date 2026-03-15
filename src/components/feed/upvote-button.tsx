@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowBigUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -16,6 +16,10 @@ export function UpvoteButton({ postId, initialCount, hasVoted, userId }: UpvoteB
   const [voted, setVoted] = useState(hasVoted);
   const [count, setCount] = useState(initialCount);
   const [loading, setLoading] = useState(false);
+
+  // Sync with server data when router.refresh() delivers new props
+  useEffect(() => { setCount(initialCount); }, [initialCount]);
+  useEffect(() => { setVoted(hasVoted); }, [hasVoted]);
 
   async function handleToggle() {
     if (loading) return;

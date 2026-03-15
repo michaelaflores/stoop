@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,6 +27,11 @@ export function AlertActions({
   const [dismissed, setDismissed] = useState(dismissedCount);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Sync with server data when router.refresh() delivers new props
+  useEffect(() => { setConfirmed(confirmedCount); }, [confirmedCount]);
+  useEffect(() => { setDismissed(dismissedCount); }, [dismissedCount]);
+  useEffect(() => { setResponse(existingResponse); }, [existingResponse]);
 
   async function handleResponse(type: "confirm" | "dismiss") {
     if (loading) return;
