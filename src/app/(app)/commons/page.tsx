@@ -40,10 +40,45 @@ export default async function CommonsPage({ searchParams }: Props) {
 
   const { data: listings } = await query;
 
-  // Fetch map data via RPC
-  const { data: mapData } = await supabase.rpc("get_neighborhood_map_data", {
-    target_neighborhood_id: neighborhoodId,
-  });
+  // Fetch map data via RPC (may fail if RPC not yet created)
+  let mapData = null;
+  try {
+    const { data, error } = await supabase.rpc("get_neighborhood_map_data", {
+      target_neighborhood_id: neighborhoodId,
+    });
+    if (!error && data) {
+      mapData = data;
+    }
+  } catch {
+    // RPC not available yet — fall through to fallback
+  }
+
+  // Fallback: if RPC failed, fetch boundary/center directly
+  if (!mapData) {
+    try {
+      const { data: geoData } = await supabase
+        .from("neighborhoods")
+        .select("name, boundary::text, center::text")
+        .eq("id", neighborhoodId)
+        .single();
+
+      if (geoData?.center) {
+        // Parse the center point text (POINT(lng lat))
+        const centerMatch = geoData.center.match(/POINT\(([^ ]+) ([^ ]+)\)/);
+        const center: [number, number] | null = centerMatch
+          ? [parseFloat(centerMatch[1]), parseFloat(centerMatch[2])]
+          : null;
+
+        mapData = {
+          boundary: null, // Can't easily parse WKT MultiPolygon client-side
+          center,
+          listings: [],
+        };
+      }
+    } catch {
+      // No map data available
+    }
+  }
 
   // Fetch neighborhood name
   const { data: neighborhood } = await supabase

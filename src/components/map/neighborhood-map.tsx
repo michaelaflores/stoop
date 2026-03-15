@@ -26,9 +26,9 @@ interface NeighborhoodMapProps {
 
 // Category to color mapping
 const CATEGORY_COLORS: Record<string, string> = {
-  tools: "#c2704e",      // primary/terracotta
+  tools: "#c2704e",
   kitchen: "#d4956b",
-  outdoor: "#7a9e7e",    // secondary/sage
+  outdoor: "#7a9e7e",
   recreation: "#6b8fb5",
   household: "#a88b6e",
   electronics: "#7e7a9e",
@@ -43,188 +43,222 @@ export function NeighborhoodMap({ mapData, neighborhoodName }: NeighborhoodMapPr
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (!mapContainer.current || !mapData?.center) return;
+    if (!mapContainer.current) return;
 
-    const m = new maplibregl.Map({
-      container: mapContainer.current,
-      style: {
-        version: 8,
-        sources: {
-          "osm-tiles": {
-            type: "raster",
-            tiles: [
-              "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
-              "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            ],
-            tileSize: 256,
-            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    // If no map data at all, show fallback
+    if (!mapData || !mapData.center) {
+      setError(true);
+      return;
+    }
+
+    try {
+      const m = new maplibregl.Map({
+        container: mapContainer.current,
+        style: {
+          version: 8,
+          sources: {
+            "osm-tiles": {
+              type: "raster",
+              tiles: [
+                "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                "https://b.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                "https://c.tile.openstreetmap.org/{z}/{x}/{y}.png",
+              ],
+              tileSize: 256,
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            },
           },
+          layers: [
+            {
+              id: "osm-tiles",
+              type: "raster",
+              source: "osm-tiles",
+              minzoom: 0,
+              maxzoom: 19,
+              paint: {
+                "raster-saturation": -0.3,
+                "raster-brightness-min": 0.1,
+                "raster-contrast": -0.1,
+              },
+            },
+          ],
         },
-        layers: [
-          {
-            id: "osm-tiles",
-            type: "raster",
-            source: "osm-tiles",
-            minzoom: 0,
-            maxzoom: 19,
+        center: mapData.center,
+        zoom: 14,
+        attributionControl: false,
+        maxZoom: 17,
+        minZoom: 11,
+      });
+
+      m.addControl(
+        new maplibregl.AttributionControl({ compact: true }),
+        "bottom-right"
+      );
+
+      m.on("load", () => {
+        // Add neighborhood boundary
+        if (mapData.boundary) {
+          m.addSource("neighborhood-boundary", {
+            type: "geojson",
+            data: {
+              type: "Feature",
+              properties: {},
+              geometry: mapData.boundary,
+            },
+          });
+
+          m.addLayer({
+            id: "neighborhood-fill",
+            type: "fill",
+            source: "neighborhood-boundary",
             paint: {
-              // Desaturate and warm-tint the tiles to match our palette
-              "raster-saturation": -0.3,
-              "raster-brightness-min": 0.1,
-              "raster-contrast": -0.1,
+              "fill-color": "#c2704e",
+              "fill-opacity": 0.08,
             },
-          },
-        ],
-      },
-      center: mapData.center,
-      zoom: 14,
-      attributionControl: false,
-      maxZoom: 17,
-      minZoom: 11,
-    });
+          });
 
-    m.addControl(
-      new maplibregl.AttributionControl({ compact: true }),
-      "bottom-right"
-    );
-
-    m.on("load", () => {
-      // Add neighborhood boundary
-      if (mapData.boundary) {
-        m.addSource("neighborhood-boundary", {
-          type: "geojson",
-          data: {
-            type: "Feature",
-            properties: {},
-            geometry: mapData.boundary,
-          },
-        });
-
-        m.addLayer({
-          id: "neighborhood-fill",
-          type: "fill",
-          source: "neighborhood-boundary",
-          paint: {
-            "fill-color": "#c2704e",
-            "fill-opacity": 0.08,
-          },
-        });
-
-        m.addLayer({
-          id: "neighborhood-border",
-          type: "line",
-          source: "neighborhood-boundary",
-          paint: {
-            "line-color": "#c2704e",
-            "line-width": 2.5,
-            "line-opacity": 0.6,
-            "line-dasharray": [4, 2],
-          },
-        });
-      }
-
-      // Add listing pins
-      if (mapData.listings.length > 0) {
-        const geojson: GeoJSON.FeatureCollection = {
-          type: "FeatureCollection",
-          features: mapData.listings.map((listing) => ({
-            type: "Feature",
-            properties: {
-              id: listing.id,
-              title: listing.title,
-              category: listing.category,
-              status: listing.status,
-              color: CATEGORY_COLORS[listing.category] || "#8a7e72",
+          m.addLayer({
+            id: "neighborhood-border",
+            type: "line",
+            source: "neighborhood-boundary",
+            paint: {
+              "line-color": "#c2704e",
+              "line-width": 2.5,
+              "line-opacity": 0.6,
+              "line-dasharray": [4, 2],
             },
-            geometry: {
-              type: "Point",
-              coordinates: listing.point,
+          });
+        }
+
+        // Add listing pins
+        if (mapData.listings && mapData.listings.length > 0) {
+          const geojson: GeoJSON.FeatureCollection = {
+            type: "FeatureCollection",
+            features: mapData.listings.map((listing) => ({
+              type: "Feature",
+              properties: {
+                id: listing.id,
+                title: listing.title,
+                category: listing.category,
+                status: listing.status,
+                color: CATEGORY_COLORS[listing.category] || "#8a7e72",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: listing.point,
+              },
+            })),
+          };
+
+          m.addSource("listings", {
+            type: "geojson",
+            data: geojson,
+          });
+
+          m.addLayer({
+            id: "listing-circles",
+            type: "circle",
+            source: "listings",
+            paint: {
+              "circle-radius": 7,
+              "circle-color": ["get", "color"],
+              "circle-stroke-width": 2,
+              "circle-stroke-color": "#ffffff",
+              "circle-opacity": [
+                "case",
+                ["==", ["get", "status"], "available"],
+                0.9,
+                0.4,
+              ],
             },
-          })),
-        };
+          });
 
-        m.addSource("listings", {
-          type: "geojson",
-          data: geojson,
-        });
+          // Hover cursor
+          m.on("mouseenter", "listing-circles", () => {
+            m.getCanvas().style.cursor = "pointer";
+          });
+          m.on("mouseleave", "listing-circles", () => {
+            m.getCanvas().style.cursor = "";
+          });
 
-        m.addLayer({
-          id: "listing-circles",
-          type: "circle",
-          source: "listings",
-          paint: {
-            "circle-radius": 7,
-            "circle-color": ["get", "color"],
-            "circle-stroke-width": 2,
-            "circle-stroke-color": "#ffffff",
-            "circle-opacity": [
-              "case",
-              ["==", ["get", "status"], "available"],
-              0.9,
-              0.4,
-            ],
-          },
-        });
+          // Click to navigate
+          m.on("click", "listing-circles", (e) => {
+            const feature = e.features?.[0];
+            if (feature?.properties?.id) {
+              router.push(`/commons/${feature.properties.id}`);
+            }
+          });
 
-        // Hover cursor
-        m.on("mouseenter", "listing-circles", () => {
-          m.getCanvas().style.cursor = "pointer";
-        });
-        m.on("mouseleave", "listing-circles", () => {
-          m.getCanvas().style.cursor = "";
-        });
+          // Popups on hover
+          const popup = new maplibregl.Popup({
+            closeButton: false,
+            closeOnClick: false,
+            offset: 12,
+            className: "stoop-popup",
+          });
 
-        // Click to navigate
-        m.on("click", "listing-circles", (e) => {
-          const feature = e.features?.[0];
-          if (feature?.properties?.id) {
-            router.push(`/commons/${feature.properties.id}`);
-          }
-        });
+          m.on("mouseenter", "listing-circles", (e) => {
+            const feature = e.features?.[0];
+            if (feature && feature.geometry.type === "Point") {
+              const coords = feature.geometry.coordinates.slice() as [number, number];
+              const title = feature.properties?.title || "";
+              const status = feature.properties?.status || "";
 
-        // Popups on hover
-        const popup = new maplibregl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          offset: 12,
-          className: "stoop-popup",
-        });
+              popup
+                .setLngLat(coords)
+                .setHTML(
+                  `<div style="font-family:Satoshi,system-ui,sans-serif;font-size:13px;font-weight:500;color:#2d2319;">${title}</div>` +
+                  `<div style="font-size:11px;color:${status === "available" ? "#4a7a4e" : "#c2704e"};margin-top:2px;">${status === "available" ? "Available" : "Borrowed"}</div>`
+                )
+                .addTo(m);
+            }
+          });
 
-        m.on("mouseenter", "listing-circles", (e) => {
-          const feature = e.features?.[0];
-          if (feature && feature.geometry.type === "Point") {
-            const coords = feature.geometry.coordinates.slice() as [number, number];
-            const title = feature.properties?.title || "";
-            const status = feature.properties?.status || "";
+          m.on("mouseleave", "listing-circles", () => {
+            popup.remove();
+          });
+        }
 
-            popup
-              .setLngLat(coords)
-              .setHTML(
-                `<div style="font-family:Satoshi,system-ui,sans-serif;font-size:13px;font-weight:500;color:#2d2319;">${title}</div>` +
-                `<div style="font-size:11px;color:${status === "available" ? "#4a7a4e" : "#c2704e"};margin-top:2px;">${status === "available" ? "Available" : "Borrowed"}</div>`
-              )
-              .addTo(m);
-          }
-        });
+        setLoaded(true);
+      });
 
-        m.on("mouseleave", "listing-circles", () => {
-          popup.remove();
-        });
-      }
+      m.on("error", () => {
+        setError(true);
+      });
 
-      setLoaded(true);
-    });
+      map.current = m;
 
-    map.current = m;
-
-    return () => {
-      m.remove();
-    };
+      return () => {
+        m.remove();
+      };
+    } catch {
+      setError(true);
+    }
   }, [mapData, router]);
+
+  // Fallback when no map data
+  if (error || !mapData?.center) {
+    return (
+      <div className="card flex h-48 items-center justify-center overflow-hidden bg-gradient-to-br from-[#e8e0d5] to-[#d5cdc2] md:h-56">
+        <div className="pointer-events-none absolute left-3 top-3 z-10">
+          <div className="rounded-lg bg-surface/90 px-2.5 py-1 text-xs font-semibold text-foreground shadow-sm backdrop-blur-sm">
+            {neighborhoodName}
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-2 text-muted">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span className="text-sm font-medium">Map view</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="card relative overflow-hidden">
