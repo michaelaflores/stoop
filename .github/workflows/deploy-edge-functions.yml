@@ -23,4 +23,5 @@ jobs:
         with:
           version: latest
 
-      - run: supabase functions deploy --project-ref $SUPABASE_PROJECT_ID
+      - run: supabase functions deploy generate-embedding --project-ref $SUPABASE_PROJECT_ID --no-verify-jwt
+      - run: supabase functions deploy search --project-ref $SUPABASE_PROJECT_ID --no-verify-jwt
