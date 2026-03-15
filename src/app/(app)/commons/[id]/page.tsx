@@ -61,9 +61,9 @@ export default async function ListingDetailPage({ params }: Props) {
       {/* Back link */}
       <Link
         href="/commons"
-        className="mb-3 inline-flex items-center gap-1 py-1 text-sm text-muted hover:text-foreground active:text-foreground"
+        className="mb-3 inline-flex items-center gap-1.5 py-2 px-1 -ml-1 text-sm font-medium text-muted hover:text-foreground active:text-foreground min-h-[44px] transition-colors"
       >
-        <ArrowLeft size={16} />
+        <ArrowLeft size={18} />
         Back to Commons
       </Link>
 

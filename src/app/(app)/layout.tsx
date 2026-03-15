@@ -36,7 +36,7 @@ export default async function AppLayout({
         avatarUrl={profile.avatar_url}
       />
       {/* Mobile top bar spacer */}
-      <div className="h-12 md:hidden" />
+      <div className="h-14 md:hidden" />
       <main className="pb-tabs">{children}</main>
       <BottomTabs
         displayName={profile.display_name}
