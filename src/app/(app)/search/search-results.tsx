@@ -8,7 +8,7 @@ import type { SearchResult } from "@/lib/supabase/types";
 
 const SOURCE_BADGE_STYLES: Record<string, string> = {
   listing: "bg-primary/10 text-primary",
-  post: "bg-secondary/10 text-secondary",
+  post: "bg-secondary-muted/10 text-secondary-muted",
   request: "bg-accent/10 text-[#7D6820]",
 };
 

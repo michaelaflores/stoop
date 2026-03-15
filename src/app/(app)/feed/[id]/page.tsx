@@ -130,7 +130,7 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
         <p className="mb-3 text-sm whitespace-pre-wrap">{typedPost.body}</p>
 
         {typedPost.type === "event" && typedPost.event_starts_at && (
-          <div className="mb-3 flex flex-col gap-1 rounded-lg bg-secondary/10 p-3 text-sm text-secondary">
+          <div className="mb-3 flex flex-col gap-1 rounded-lg bg-secondary-muted/10 p-3 text-sm text-secondary-muted">
             <span className="flex items-center gap-1.5">
               <Calendar size={14} />
               {format(new Date(typedPost.event_starts_at), "EEE, MMM d 'at' h:mm a")}

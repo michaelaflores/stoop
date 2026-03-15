@@ -29,7 +29,7 @@ interface Feature {
 
 const CATEGORY_BORDER: Record<FeatureCategory, string> = {
   auth: "border-l-primary",
-  realtime: "border-l-secondary",
+  realtime: "border-l-secondary-muted",
   data: "border-l-accent",
   ai: "border-l-[#3ECF8E]",
 };

@@ -154,9 +154,9 @@ export default async function ListingDetailPage({ params }: Props) {
             )}
             {existingBorrow.status === "approved" && (
               <>
-                <CheckCircle size={20} className="shrink-0 text-secondary" />
+                <CheckCircle size={20} className="shrink-0 text-green-600" />
                 <div>
-                  <p className="text-sm font-medium text-secondary">Approved</p>
+                  <p className="text-sm font-medium text-green-600">Approved</p>
                   <p className="text-xs text-muted">
                     Ready for pickup. Confirm in your{" "}
                     <Link href="/profile" className="text-primary underline">profile</Link>.

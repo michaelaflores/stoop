@@ -68,7 +68,7 @@ export function PostCard({ post, hasVoted, userId }: PostCardProps) {
       <p className="mb-2 text-sm text-muted line-clamp-3">{post.body}</p>
 
       {post.type === "event" && post.event_starts_at && (
-        <div className="mb-2 flex flex-col gap-1 text-sm text-secondary">
+        <div className="mb-2 flex flex-col gap-1 text-sm text-secondary-muted">
           <span className="flex items-center gap-1">
             <Calendar size={14} />
             {format(new Date(post.event_starts_at), "EEE, MMM d 'at' h:mm a")}

@@ -11,9 +11,12 @@
   --primary: #1E3A5F;
   --primary-hover: #152C4A;
 
-  /* Secondary — heritage red */
+  /* Secondary — heritage red (buttons, strong CTAs) */
   --secondary: #C94340;
   --secondary-hover: #A83533;
+
+  /* Secondary muted — warm brick (decorative, informational) */
+  --secondary-muted: #A86E5A;
 
   /* Supporting */
   --muted: #6B7280;
@@ -34,6 +37,7 @@
   --color-primary-hover: var(--primary-hover);
   --color-secondary: var(--secondary);
   --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-muted: var(--secondary-muted);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
   --color-alert: var(--alert);

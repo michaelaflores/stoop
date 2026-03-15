@@ -91,8 +91,8 @@ export function BorrowRequestForm({
   if (success) {
     return (
       <div className="py-8 text-center">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10">
-          <span className="text-lg text-secondary">✓</span>
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-50">
+          <span className="text-lg text-green-600">✓</span>
         </div>
         <p className="font-medium">Request sent!</p>
         <p className="mt-1 text-sm text-muted">
