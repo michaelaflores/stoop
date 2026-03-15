@@ -47,10 +47,13 @@ Deno.serve(async (req) => {
     }
 
     // Generate embedding using built-in gte-small (384 dimensions)
-    const embedding = await model.run(content, {
+    const rawEmbedding = await model.run(content, {
       mean_pool: true,
       normalize: true,
     });
+
+    // Convert Float32Array to regular array for proper JSON serialization
+    const embedding = Array.from(rawEmbedding);
 
     // Store embedding in the database
     const supabase = createClient(

@@ -57,7 +57,7 @@ export async function semanticSearchNeighborhood(query: string) {
       body: JSON.stringify({
         search: query,
         neighborhood_id: profile.neighborhood_id,
-        match_threshold: 0.6,
+        match_threshold: 0.5,
         limit: 30,
       }),
     });

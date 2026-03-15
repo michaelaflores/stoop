@@ -41,10 +41,13 @@ Deno.serve(async (req) => {
     }
 
     // Generate embedding for the search query using gte-small
-    const embedding = await model.run(search, {
+    const rawEmbedding = await model.run(search, {
       mean_pool: true,
       normalize: true,
     });
+
+    // Convert Float32Array to regular array for proper JSON serialization
+    const embedding = Array.from(rawEmbedding);
 
     // Call the semantic_search RPC
     const supabase = createClient(
