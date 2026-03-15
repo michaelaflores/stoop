@@ -1,10 +1,6 @@
-import Link from "next/link";
-import { Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { ListingCard } from "@/components/listings/listing-card";
-import { CategoryFilter } from "./category-filter";
-import { CommonsMap } from "./commons-map";
-import type { ListingWithOwner, ListingCategory } from "@/lib/supabase/types";
+import { CommonsContent } from "./commons-content";
+import type { ListingWithOwner } from "@/lib/supabase/types";
 
 interface Props {
   searchParams: Promise<{ category?: string }>;
@@ -26,19 +22,13 @@ export default async function CommonsPage({ searchParams }: Props) {
 
   const neighborhoodId = profile!.neighborhood_id!;
 
-  // Fetch listings
-  let query = supabase
+  // Fetch ALL listings (filtering is client-side to avoid map re-render)
+  const { data: listings } = await supabase
     .from("listings")
     .select("*, profiles!listings_owner_id_fkey(display_name, avatar_url, reputation_tier)")
     .eq("neighborhood_id", neighborhoodId)
     .eq("is_active", true)
     .order("created_at", { ascending: false });
-
-  if (params.category) {
-    query = query.eq("category", params.category);
-  }
-
-  const { data: listings } = await query;
 
   // Fetch map data via RPC (may fail if RPC not yet created)
   let mapData = null;
@@ -88,41 +78,11 @@ export default async function CommonsPage({ searchParams }: Props) {
     .single();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-4">
-      {/* Map */}
-      <div className="mb-4">
-        <CommonsMap
-          mapData={mapData}
-          neighborhoodName={neighborhood?.name ?? "Your Neighborhood"}
-        />
-      </div>
-
-      {/* Category filter */}
-      <CategoryFilter activeCategory={params.category as ListingCategory | undefined} />
-
-      {/* Listings grid */}
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-        {(listings as ListingWithOwner[] | null)?.map((listing) => (
-          <ListingCard key={listing.id} listing={listing} />
-        ))}
-      </div>
-
-      {(!listings || listings.length === 0) && (
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted">
-            No listings yet. Be the first to share something!
-          </p>
-        </div>
-      )}
-
-      {/* Add listing FAB */}
-      <Link
-        href="/commons/new"
-        className="fixed right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg active:scale-95 transition-transform hover:scale-105 md:bottom-6 md:h-12 md:w-12"
-        style={{ bottom: 'calc(4.5rem + env(safe-area-inset-bottom, 0px))' }}
-      >
-        <Plus size={24} />
-      </Link>
-    </div>
+    <CommonsContent
+      listings={(listings as ListingWithOwner[]) ?? []}
+      mapData={mapData}
+      neighborhoodName={neighborhood?.name ?? "Your Neighborhood"}
+      initialCategory={params.category}
+    />
   );
 }
