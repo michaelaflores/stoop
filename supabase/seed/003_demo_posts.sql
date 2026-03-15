@@ -31,15 +31,29 @@ BEGIN
   END IF;
 
   -- Get user IDs (up to 5)
+  -- First try users in the target neighborhood, then fall back to ANY profile
   SELECT id INTO v_user1 FROM profiles WHERE neighborhood_id = v_neighborhood_id ORDER BY created_at ASC LIMIT 1;
-  SELECT id INTO v_user2 FROM profiles WHERE neighborhood_id = v_neighborhood_id AND id != v_user1 ORDER BY created_at ASC LIMIT 1;
-  -- If not enough users in the neighborhood, reuse user1
+  IF v_user1 IS NULL THEN
+    -- No users in this neighborhood — grab the first profile in the DB
+    SELECT id INTO v_user1 FROM profiles ORDER BY created_at ASC LIMIT 1;
+  END IF;
+  -- Also update neighborhood_id to match the user's actual neighborhood if needed
+  IF v_user1 IS NOT NULL THEN
+    SELECT COALESCE(neighborhood_id, v_neighborhood_id) INTO v_neighborhood_id FROM profiles WHERE id = v_user1;
+  END IF;
+
+  -- Safety check: abort if there are no profiles at all
+  IF v_user1 IS NULL THEN
+    RAISE EXCEPTION 'No profiles found. Please sign up at least one user before running this seed.';
+  END IF;
+
+  SELECT id INTO v_user2 FROM profiles WHERE id != v_user1 ORDER BY created_at ASC LIMIT 1;
   IF v_user2 IS NULL THEN v_user2 := v_user1; END IF;
-  SELECT id INTO v_user3 FROM profiles WHERE neighborhood_id = v_neighborhood_id AND id NOT IN (v_user1, v_user2) ORDER BY created_at ASC LIMIT 1;
+  SELECT id INTO v_user3 FROM profiles WHERE id NOT IN (v_user1, v_user2) ORDER BY created_at ASC LIMIT 1;
   IF v_user3 IS NULL THEN v_user3 := v_user1; END IF;
-  SELECT id INTO v_user4 FROM profiles WHERE neighborhood_id = v_neighborhood_id AND id NOT IN (v_user1, v_user2, v_user3) ORDER BY created_at ASC LIMIT 1;
+  SELECT id INTO v_user4 FROM profiles WHERE id NOT IN (v_user1, v_user2, v_user3) ORDER BY created_at ASC LIMIT 1;
   IF v_user4 IS NULL THEN v_user4 := v_user2; END IF;
-  SELECT id INTO v_user5 FROM profiles WHERE neighborhood_id = v_neighborhood_id AND id NOT IN (v_user1, v_user2, v_user3, v_user4) ORDER BY created_at ASC LIMIT 1;
+  SELECT id INTO v_user5 FROM profiles WHERE id NOT IN (v_user1, v_user2, v_user3, v_user4) ORDER BY created_at ASC LIMIT 1;
   IF v_user5 IS NULL THEN v_user5 := v_user1; END IF;
 
   -- ============================================================
