@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingFeatures } from "@/components/landing/landing-features";
 import { LandingHowItWorks } from "@/components/landing/landing-how-it-works";
-import { LandingTestimonials } from "@/components/landing/landing-testimonials";
 import { LandingCTA } from "@/components/landing/landing-cta";
 import { LandingFooter } from "@/components/landing/landing-footer";
 import Link from "next/link";
@@ -59,7 +58,6 @@ export default async function HomePage() {
         <LandingHero />
         <LandingFeatures />
         <LandingHowItWorks />
-        <LandingTestimonials />
         <LandingCTA />
       </main>
 

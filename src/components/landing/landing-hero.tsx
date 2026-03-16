@@ -46,28 +46,28 @@ export function LandingHero() {
           </Link>
         </div>
 
-        {/* Quick stats */}
+        {/* Feature highlights */}
         <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-8">
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <Wrench size={24} />
             </div>
-            <p className="mt-3 text-2xl font-bold text-foreground font-display">500+</p>
-            <p className="text-sm text-muted">Items shared</p>
+            <p className="mt-3 text-base font-bold text-foreground font-display">Share & Borrow</p>
+            <p className="text-sm text-muted text-center">Tools, gear, and more</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-secondary/10 text-secondary">
               <Users size={24} />
             </div>
-            <p className="mt-3 text-2xl font-bold text-foreground font-display">1,200+</p>
-            <p className="text-sm text-muted">Active neighbors</p>
+            <p className="mt-3 text-base font-bold text-foreground font-display">Build Trust</p>
+            <p className="text-sm text-muted text-center">Reputation system</p>
           </div>
           <div className="flex flex-col items-center">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
               <MessageSquare size={24} />
             </div>
-            <p className="mt-3 text-2xl font-bold text-foreground font-display">50+</p>
-            <p className="text-sm text-muted">Neighborhoods</p>
+            <p className="mt-3 text-base font-bold text-foreground font-display">50+</p>
+            <p className="text-sm text-muted text-center">Neighborhoods</p>
           </div>
         </div>
       </div>
