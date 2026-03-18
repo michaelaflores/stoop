@@ -4,7 +4,7 @@ Neighborhood Memory & Connection Platform for Philadelphia.
 
 Named after the iconic front stoops where neighbors gather to talk, share news, and look out for each other. Stoop brings that experience online — with real-time feeds, community events, safety alerts, and AI-powered neighborhood memory.
 
-Built for the [Good Neighbors Hackathon](https://indyhall.org/goodneighbors/) at Indy Hall.
+Built for the [Good Neighbors Hackathon](https://indyhall.org/goodneighbors/) at Indy Hall, where it won the signature category Best Use of Supabase.
 
 ## Tech Stack
 
